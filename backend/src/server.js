@@ -35,6 +35,20 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Global Error Handler & Invalid JSON Middleware
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    return res.status(400).json({ success: false, error: 'Invalid JSON payload format' });
+  }
+  console.error('Server internal error:', err.message);
+  res.status(500).json({ success: false, error: err.message || 'Internal Server Error' });
+});
+
+// 404 Route Catch-all
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: `Endpoint ${req.originalUrl} not found` });
+});
+
 // Auto-initialize DB on startup if needed and start server
 initDatabase().then(() => {
   app.listen(PORT, () => {
