@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Star, Clock, Users, MapPin, Calendar, CheckCircle2, MessageSquare, UserCheck } from 'lucide-react';
+import { X, Star, Clock, MapPin, Calendar, MessageSquare, UserCheck } from 'lucide-react';
 import { fetchTourById, submitReview } from '../services/api';
 
 export default function TourDetailModal({ tourId, onClose, onOpenBook, onReviewSubmitted }) {

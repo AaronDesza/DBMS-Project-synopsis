@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DollarSign, Compass, Users, UserCheck, TrendingUp, Award, RefreshCw } from 'lucide-react';
+import { DollarSign, Compass, UserCheck, TrendingUp, Award, RefreshCw } from 'lucide-react';
 import { fetchDbmsAnalytics } from '../services/api';
 
 export default function AnalyticsView() {

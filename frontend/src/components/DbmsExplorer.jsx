@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Database, Play, Table, Key, Code, Clock, Layers, CheckCircle, Copy, Check } from 'lucide-react';
+import { Database, Play, Table, Key, Code, Clock, CheckCircle } from 'lucide-react';
 import { fetchDbmsSchema, fetchTableRows, executeCustomSqlQuery } from '../services/api';
 
 const PRESET_QUERIES = [

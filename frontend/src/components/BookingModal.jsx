@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Calendar, User, Mail, Phone, Users, CreditCard, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { X, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { createBooking } from '../services/api';
 
 export default function BookingModal({ tour, onClose, onBookingSuccess }) {
@@ -177,6 +177,17 @@ export default function BookingModal({ tour, onClose, onBookingSuccess }) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                  />
+                </div>
+
+                <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                  <label className="form-label">Phone Number</label>
+                  <input
+                    type="tel"
+                    className="form-input"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+1-555-0192"
                   />
                 </div>
               </div>
