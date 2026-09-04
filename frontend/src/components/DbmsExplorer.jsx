@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Database, Play, Table, Key, Code, Clock, Layers, CheckCircle } from 'lucide-react';
+import { Database, Play, Table, Key, Code, Clock, Layers, CheckCircle, Copy, Check } from 'lucide-react';
+import { fetchDbmsSchema, fetchTableRows, executeCustomSqlQuery } from '../services/api';
 
 const PRESET_QUERIES = [
   {
@@ -59,6 +60,10 @@ ORDER BY b.booking_id DESC;`
 FROM tours
 WHERE rating > (SELECT AVG(rating) FROM tours)
 ORDER BY rating DESC;`
+  },
+  {
+    title: 'Relational View: view_tour_summary',
+    sql: `SELECT * FROM view_tour_summary;`
   }
 ];
 
@@ -74,10 +79,9 @@ export default function DbmsExplorer() {
   const [executing, setExecuting] = useState(false);
   const [queryError, setQueryError] = useState(null);
 
-  const fetchSchema = async () => {
+  const loadSchema = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/dbms/schema');
-      const data = await res.json();
+      const data = await fetchDbmsSchema();
       if (data.success) {
         setSchemaData(data.data);
       }
@@ -86,11 +90,10 @@ export default function DbmsExplorer() {
     }
   };
 
-  const fetchTableRows = async (tableName) => {
+  const loadTableRows = async (tableName) => {
     try {
       setLoadingTable(true);
-      const res = await fetch(`http://localhost:5000/api/dbms/table/${tableName}`);
-      const data = await res.json();
+      const data = await fetchTableRows(tableName);
       if (data.success) {
         setTableData(data);
       }
@@ -102,12 +105,12 @@ export default function DbmsExplorer() {
   };
 
   useEffect(() => {
-    fetchSchema();
+    loadSchema();
   }, []);
 
   useEffect(() => {
     if (selectedTable) {
-      fetchTableRows(selectedTable);
+      loadTableRows(selectedTable);
     }
   }, [selectedTable]);
 
@@ -116,16 +119,11 @@ export default function DbmsExplorer() {
     try {
       setExecuting(true);
       setQueryError(null);
-      const res = await fetch('http://localhost:5000/api/dbms/query', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: sqlQuery })
-      });
-      const data = await res.json();
+      const data = await executeCustomSqlQuery(sqlQuery);
       if (data.success) {
         setQueryResult(data);
       } else {
-        setQueryError(data.error || 'SQL Execution error');
+        setQueryError(data.error || data.message || 'SQL Execution error');
         setQueryResult(null);
       }
     } catch (err) {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Star, Clock, Users, MapPin, Calendar, CheckCircle2, MessageSquare, UserCheck } from 'lucide-react';
+import { fetchTourById, submitReview } from '../services/api';
 
 export default function TourDetailModal({ tourId, onClose, onOpenBook, onReviewSubmitted }) {
   const [tourDetails, setTourDetails] = useState(null);
@@ -16,12 +17,12 @@ export default function TourDetailModal({ tourId, onClose, onOpenBook, onReviewS
   const fetchTourData = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/tours/${tourId}`);
-      const data = await res.json();
+      setError(null);
+      const data = await fetchTourById(tourId);
       if (data.success) {
         setTourDetails(data.data);
       } else {
-        setError(data.message || 'Failed to fetch tour details');
+        setError(data.message || data.error || 'Failed to fetch tour details');
       }
     } catch (err) {
       setError(err.message);
@@ -42,24 +43,22 @@ export default function TourDetailModal({ tourId, onClose, onOpenBook, onReviewS
 
     try {
       setSubmittingReview(true);
-      const res = await fetch('http://localhost:5000/api/reviews', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          tourId,
-          userId: 1, // Alex Rivera
-          rating: Number(rating),
-          title: reviewTitle || 'Traveler Experience',
-          comment
-        })
+      const data = await submitReview({
+        tourId,
+        userId: 1, // Alex Rivera
+        rating: Number(rating),
+        title: reviewTitle || 'Traveler Experience',
+        comment
       });
-      const data = await res.json();
+
       if (data.success) {
         setReviewSuccess('Review submitted & database trigger/ratings updated!');
         setComment('');
         setReviewTitle('');
         fetchTourData(); // reload reviews & updated rating
         if (onReviewSubmitted) onReviewSubmitted();
+      } else {
+        alert('Error: ' + (data.message || data.error || 'Failed to submit review'));
       }
     } catch (err) {
       alert('Error submitting review: ' + err.message);

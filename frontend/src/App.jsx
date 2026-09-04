@@ -8,6 +8,7 @@ import MyBookings from './components/MyBookings';
 import DbmsExplorer from './components/DbmsExplorer';
 import AnalyticsView from './components/AnalyticsView';
 import ArchitectureView from './components/ArchitectureView';
+import { fetchDestinations, fetchBookings, fetchTours as getFilteredTours } from './services/api';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('explore');
@@ -32,8 +33,7 @@ export default function App() {
 
   // Fetch Destinations
   useEffect(() => {
-    fetch('http://localhost:5000/api/tours/destinations')
-      .then(r => r.json())
+    fetchDestinations()
       .then(d => {
         if (d.success) setDestinations(d.data);
       })
@@ -42,8 +42,7 @@ export default function App() {
 
   // Fetch Bookings Count
   useEffect(() => {
-    fetch('http://localhost:5000/api/bookings')
-      .then(r => r.json())
+    fetchBookings()
       .then(d => {
         if (d.success) setBookingsCount(d.count || 0);
       })
@@ -51,21 +50,21 @@ export default function App() {
   }, [refreshTrigger]);
 
   // Fetch Tours with filters
-  const fetchTours = async () => {
+  const loadTours = async () => {
     try {
       setLoading(true);
-      const params = new URLSearchParams();
-      if (searchQuery) params.append('search', searchQuery);
-      if (selectedCategory && selectedCategory !== 'All') params.append('category', selectedCategory);
-      if (selectedDifficulty && selectedDifficulty !== 'All') params.append('difficulty', selectedDifficulty);
-      if (selectedDestination) params.append('destinationId', selectedDestination);
+      setError(null);
+      const data = await getFilteredTours({
+        search: searchQuery,
+        category: selectedCategory,
+        difficulty: selectedDifficulty,
+        destinationId: selectedDestination
+      });
 
-      const res = await fetch(`http://localhost:5000/api/tours?${params.toString()}`);
-      const data = await res.json();
       if (data.success) {
-        setTours(data.data);
+        setTours(data.data || []);
       } else {
-        setError(data.message);
+        setError(data.message || data.error || 'Failed to load tours');
       }
     } catch (err) {
       setError(err.message);
@@ -75,7 +74,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetchTours();
+    loadTours();
   }, [searchQuery, selectedCategory, selectedDifficulty, selectedDestination, refreshTrigger]);
 
   const handleBookingSuccess = () => {

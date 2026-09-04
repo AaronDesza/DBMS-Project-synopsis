@@ -100,11 +100,25 @@ export async function executeSqlQuery(req, res) {
     const { query } = req.body;
 
     if (!query || typeof query !== 'string') {
-      return res.status(400).json({ success: false, message: 'No SQL query provided' });
+      return res.status(400).json({ success: false, error: 'No SQL query provided' });
     }
 
-    const trimmed = query.trim();
-    const isSelect = trimmed.toUpperCase().startsWith('SELECT') || trimmed.toUpperCase().startsWith('EXPLAIN') || trimmed.toUpperCase().startsWith('WITH');
+    let trimmed = query.trim();
+    if (!trimmed) {
+      return res.status(400).json({ success: false, error: 'Query cannot be empty' });
+    }
+
+    // Remove single trailing semicolon for sqlite execution
+    if (trimmed.endsWith(';')) {
+      trimmed = trimmed.slice(0, -1).trim();
+    }
+
+    const upper = trimmed.toUpperCase();
+    const isSelect = upper.startsWith('SELECT') || 
+                     upper.startsWith('EXPLAIN') || 
+                     upper.startsWith('WITH') || 
+                     upper.startsWith('PRAGMA') ||
+                     upper.startsWith('SHOW');
 
     const startTime = process.hrtime();
 
@@ -122,7 +136,7 @@ export async function executeSqlQuery(req, res) {
       success: true,
       isSelect,
       executionTimeMs: `${executionTimeMs} ms`,
-      rowCount: Array.isArray(result) ? result.length : result.changes || 0,
+      rowCount: Array.isArray(result) ? result.length : (result?.changes ?? 0),
       columns: Array.isArray(result) && result.length > 0 ? Object.keys(result[0]) : [],
       data: result
     });

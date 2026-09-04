@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, User, Clock, MapPin, DollarSign, Ban, CheckCircle, RefreshCw } from 'lucide-react';
+import { fetchBookings as getBookingsList, cancelBooking as cancelReservation } from '../services/api';
 
 export default function MyBookings({ onRefreshTrigger }) {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchBookings = async () => {
+  const loadBookings = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/bookings');
-      const data = await res.json();
+      setError(null);
+      const data = await getBookingsList();
       if (data.success) {
-        setBookings(data.data);
+        setBookings(data.data || []);
       } else {
-        setError(data.message);
+        setError(data.message || data.error || 'Failed to fetch bookings');
       }
     } catch (err) {
       setError(err.message);
@@ -24,7 +25,7 @@ export default function MyBookings({ onRefreshTrigger }) {
   };
 
   useEffect(() => {
-    fetchBookings();
+    loadBookings();
   }, [onRefreshTrigger]);
 
   const handleCancelBooking = async (bookingId) => {
@@ -33,14 +34,11 @@ export default function MyBookings({ onRefreshTrigger }) {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/bookings/${bookingId}/cancel`, {
-        method: 'PUT'
-      });
-      const data = await res.json();
+      const data = await cancelReservation(bookingId);
       if (data.success) {
-        fetchBookings();
+        loadBookings();
       } else {
-        alert(data.message);
+        alert(data.message || data.error || 'Cancellation failed');
       }
     } catch (err) {
       alert('Error: ' + err.message);

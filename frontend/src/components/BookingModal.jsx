@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { X, Calendar, User, Mail, Phone, Users, CreditCard, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { createBooking } from '../services/api';
 
 export default function BookingModal({ tour, onClose, onBookingSuccess }) {
+  const todayStr = new Date().toISOString().split('T')[0];
   const [fullName, setFullName] = useState('Alex Rivera');
   const [email, setEmail] = useState('alex.rivera@example.com');
   const [phone, setPhone] = useState('+1-555-0192');
@@ -24,28 +26,23 @@ export default function BookingModal({ tour, onClose, onBookingSuccess }) {
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/bookings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: 1,
-          fullName,
-          email,
-          phone,
-          tourId: tour.tour_id,
-          travelDate,
-          travelersCount: Number(travelersCount),
-          specialRequests,
-          paymentMethod
-        })
+      const data = await createBooking({
+        userId: 1,
+        fullName,
+        email,
+        phone,
+        tourId: tour.tour_id,
+        travelDate,
+        travelersCount: Number(travelersCount),
+        specialRequests,
+        paymentMethod
       });
 
-      const data = await res.json();
       if (data.success) {
         setConfirmedBooking(data.data);
         if (onBookingSuccess) onBookingSuccess(data.data);
       } else {
-        setError(data.message || 'Failed to complete booking');
+        setError(data.message || data.error || 'Failed to complete booking');
       }
     } catch (err) {
       setError(err.message);
@@ -190,6 +187,7 @@ export default function BookingModal({ tour, onClose, onBookingSuccess }) {
                   <input
                     type="date"
                     className="form-input"
+                    min={todayStr}
                     value={travelDate}
                     onChange={(e) => setTravelDate(e.target.value)}
                     required

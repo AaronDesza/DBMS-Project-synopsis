@@ -1,33 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { DollarSign, Compass, Users, UserCheck, TrendingUp, Award, RefreshCw } from 'lucide-react';
+import { fetchDbmsAnalytics } from '../services/api';
 
 export default function AnalyticsView() {
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const fetchAnalytics = async () => {
+  const loadAnalytics = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/dbms/analytics');
-      const data = await res.json();
+      setError(null);
+      const data = await fetchDbmsAnalytics();
       if (data.success) {
         setAnalytics(data.data);
+      } else {
+        setError(data.message || data.error || 'Failed to load analytics');
       }
     } catch (err) {
-      console.error(err);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchAnalytics();
+    loadAnalytics();
   }, []);
 
-  if (loading || !analytics) {
+  if (loading) {
     return (
       <div style={{ textAlign: 'center', padding: '4rem', color: '#94a3b8' }}>
         Calculating relational aggregations and analytics...
+      </div>
+    );
+  }
+
+  if (error || !analytics) {
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center' }}>
+        <div className="badge badge-danger" style={{ padding: '1rem', marginBottom: '1rem' }}>
+          ⚠️ {error || 'Could not load analytics data'}
+        </div>
+        <button className="btn btn-secondary" onClick={loadAnalytics}>
+          <RefreshCw size={16} />
+          <span>Retry</span>
+        </button>
       </div>
     );
   }

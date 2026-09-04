@@ -47,12 +47,12 @@ export async function getAllTours(req, res) {
       params.push(difficulty);
     }
 
-    if (maxPrice) {
+    if (maxPrice && !isNaN(maxPrice)) {
       query += ` AND t.price_per_person <= ?`;
       params.push(Number(maxPrice));
     }
 
-    if (destinationId) {
+    if (destinationId && !isNaN(destinationId)) {
       query += ` AND t.destination_id = ?`;
       params.push(Number(destinationId));
     }
