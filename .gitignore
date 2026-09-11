@@ -17,6 +17,11 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Temporary / local clones
+Historical-Places-Of-The-World/
+DBMS-Project-synopsis/
+
 # OS Files
 .DS_Store
 Thumbs.db
+
