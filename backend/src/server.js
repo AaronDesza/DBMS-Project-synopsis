@@ -32,7 +32,24 @@ app.use('/api/bookings', bookingsRoutes);
 app.use('/api/reviews', reviewsRoutes);
 app.use('/api/dbms', dbmsRoutes);
 
-// Health check endpoint
+// Health check & Root endpoints
+app.get('/', (req, res) => {
+  res.json({
+    status: 'online',
+    message: 'Travel & Tour DBMS Backend API Server',
+    health: '/api/health',
+    endpoints: ['/api/places', '/api/tours', '/api/bookings', '/api/reviews', '/api/favorites', '/api/dbms/schema']
+  });
+});
+
+app.get('/api', (req, res) => {
+  res.json({
+    status: 'online',
+    message: 'Travel & Tour DBMS API Root',
+    health: '/api/health'
+  });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
@@ -40,6 +57,7 @@ app.get('/api/health', (req, res) => {
     service: 'Travel & Tour DBMS Backend API'
   });
 });
+
 
 // Global Error Handler & Invalid JSON Middleware
 app.use((err, req, res, next) => {

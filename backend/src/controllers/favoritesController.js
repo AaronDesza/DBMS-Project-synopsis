@@ -1,11 +1,46 @@
 import { getDb } from '../config/database.js';
 
 /**
+ * GET /api/favorites
+ * Query: ?userId= (optional)
+ * Returns all favorites or filtered by userId
+ */
+export async function getAllFavorites(req, res) {
+  try {
+    const db = await getDb();
+    const userId = req.query.userId || (req.user ? req.user.userId : null);
+
+    let query = `
+      SELECT f.favorite_id, f.user_id, f.saved_at,
+             hp.place_id, hp.name, hp.country, hp.city, hp.category,
+             hp.era, hp.image_url, hp.latitude, hp.longitude, hp.continent
+      FROM favorites f
+      JOIN historical_places hp ON f.place_id = hp.place_id
+    `;
+    const params = [];
+
+    if (userId) {
+      query += ` WHERE f.user_id = ?`;
+      params.push(Number(userId));
+    }
+
+    query += ` ORDER BY f.saved_at DESC`;
+
+    const favorites = await db.all(query, params);
+    res.json({ success: true, count: favorites.length, data: favorites });
+  } catch (error) {
+    console.error('Error fetching favorites:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch favorites', error: error.message });
+  }
+}
+
+/**
  * POST /api/favorites
  * Body: { placeId }
  * Requires: JWT auth (user_id comes from token)
  */
 export async function addFavorite(req, res) {
+
   try {
     const { placeId } = req.body;
     const userId = req.user.userId;

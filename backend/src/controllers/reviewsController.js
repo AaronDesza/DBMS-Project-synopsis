@@ -1,5 +1,33 @@
 import { getDb } from '../config/database.js';
 
+// Get all reviews with optional tourId filter
+export async function getAllReviews(req, res) {
+  try {
+    const db = await getDb();
+    const { tourId } = req.query;
+
+    let query = `
+      SELECT r.*, u.full_name as reviewer_name, u.avatar_url as reviewer_avatar, t.title as tour_title
+      FROM reviews r
+      LEFT JOIN users u ON r.user_id = u.user_id
+      LEFT JOIN tours t ON r.tour_id = t.tour_id
+    `;
+
+    const params = [];
+    if (tourId) {
+      query += ` WHERE r.tour_id = ?`;
+      params.push(Number(tourId));
+    }
+
+    query += ` ORDER BY r.created_at DESC`;
+
+    const reviews = await db.all(query, params);
+    res.json({ success: true, count: reviews.length, data: reviews });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+}
+
 // Add a review and update aggregate ratings for the tour package
 export async function addReview(req, res) {
   try {
@@ -61,3 +89,4 @@ export async function addReview(req, res) {
     res.status(500).json({ success: false, error: error.message });
   }
 }
+
