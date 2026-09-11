@@ -5,6 +5,9 @@ import toursRoutes from './routes/toursRoutes.js';
 import bookingsRoutes from './routes/bookingsRoutes.js';
 import reviewsRoutes from './routes/reviewsRoutes.js';
 import dbmsRoutes from './routes/dbmsRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import placesRoutes from './routes/placesRoutes.js';
+import favoritesRoutes from './routes/favoritesRoutes.js';
 import initDatabase from './db/initDb.js';
 
 dotenv.config();
@@ -21,6 +24,9 @@ app.use(cors({
 app.use(express.json());
 
 // API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/places', placesRoutes);
+app.use('/api/favorites', favoritesRoutes);
 app.use('/api/tours', toursRoutes);
 app.use('/api/bookings', bookingsRoutes);
 app.use('/api/reviews', reviewsRoutes);
@@ -58,6 +64,13 @@ initDatabase().then(() => {
     console.log(`   - GET  /api/tours`);
     console.log(`   - GET  /api/tours/destinations`);
     console.log(`   - GET  /api/bookings`);
+    console.log(`   - GET  /api/places`);
+    console.log(`   - GET  /api/places/:id`);
+    console.log(`   - POST /api/places       (JWT required)`);
+    console.log(`   - PUT  /api/places/:id   (JWT required)`);
+    console.log(`   - DELETE /api/places/:id (JWT required)`);
+    console.log(`   - POST /api/favorites    (JWT required)`);
+    console.log(`   - GET  /api/favorites/:userId (JWT required)`);
     console.log(`   - GET  /api/dbms/schema`);
     console.log(`   - POST /api/dbms/query`);
     console.log(`   - GET  /api/dbms/analytics`);

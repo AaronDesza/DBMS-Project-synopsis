@@ -127,6 +127,41 @@ CREATE TABLE IF NOT EXISTS payments (
 );
 
 -- ==========================================================
+-- 10. Historical Places Table (for the Historical Places module)
+-- ==========================================================
+CREATE TABLE IF NOT EXISTS historical_places (
+    place_id     INTEGER PRIMARY KEY AUTOINCREMENT,
+    name         VARCHAR(150) NOT NULL,
+    country      VARCHAR(100) NOT NULL,
+    city         VARCHAR(100),
+    description  TEXT,
+    category     VARCHAR(80)  NOT NULL DEFAULT 'Monument'
+                 CHECK(category IN ('Monument','Temple','Palace','Fortress','Ruins','UNESCO Site','Wonder','Natural','Other')),
+    era          VARCHAR(100),              -- e.g. "1st century AD", "17th Century", "Ancient"
+    century      INTEGER,                  -- numeric century, e.g. 1, 17, -3 (BC as negative)
+    latitude     REAL,
+    longitude    REAL,
+    image_url    TEXT,
+    continent    VARCHAR(50)  DEFAULT 'Global',
+    significance TEXT,
+    year_built   VARCHAR(50),
+    entry_fee    DECIMAL(8,2) DEFAULT 0,
+    visiting_hours VARCHAR(100) DEFAULT '09:00 AM - 05:00 PM',
+    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 11. Favorites Table (Users saving Historical Places)
+CREATE TABLE IF NOT EXISTS favorites (
+    favorite_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id     INTEGER NOT NULL,
+    place_id    INTEGER NOT NULL,
+    saved_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, place_id),
+    FOREIGN KEY (user_id)  REFERENCES users(user_id)  ON DELETE CASCADE,
+    FOREIGN KEY (place_id) REFERENCES historical_places(place_id) ON DELETE CASCADE
+);
+
+-- ==========================================================
 -- DBMS Indexes for Performance Optimization
 -- ==========================================================
 CREATE INDEX IF NOT EXISTS idx_tours_destination ON tours(destination_id);
@@ -135,6 +170,11 @@ CREATE INDEX IF NOT EXISTS idx_tours_price ON tours(price_per_person);
 CREATE INDEX IF NOT EXISTS idx_bookings_user ON bookings(user_id);
 CREATE INDEX IF NOT EXISTS idx_bookings_tour ON bookings(tour_id);
 CREATE INDEX IF NOT EXISTS idx_reviews_tour ON reviews(tour_id);
+CREATE INDEX IF NOT EXISTS idx_places_country   ON historical_places(country);
+CREATE INDEX IF NOT EXISTS idx_places_category  ON historical_places(category);
+CREATE INDEX IF NOT EXISTS idx_places_continent ON historical_places(continent);
+CREATE INDEX IF NOT EXISTS idx_favorites_user   ON favorites(user_id);
+CREATE INDEX IF NOT EXISTS idx_favorites_place  ON favorites(place_id);
 
 -- ==========================================================
 -- Relational Views (For Academic Demonstration & Reporting)
