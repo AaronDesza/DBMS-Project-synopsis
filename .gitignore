@@ -1,27 +1,8 @@
-# Dependencies
-node_modules/
-*/node_modules/
+# PHP/XAMPP project
+config/db.php
 
-# Production builds
-dist/
-*/dist/
-
-# Environment files
-.env
-.env.local
-*.local
-
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Temporary / local clones
-Historical-Places-Of-The-World/
-DBMS-Project-synopsis/
-
-# OS Files
+# OS & editor
 .DS_Store
 Thumbs.db
-
+.vscode/
+*.log
