@@ -12,31 +12,35 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(publicPath));
 
-// MongoDB Connection with Caching for Serverless (Vercel)
+// MongoDB URI with IPv4 fallback for local environments
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/travel_booking_db';
+
 let isConnected = false;
 async function connectDB() {
-  if (isConnected || mongoose.connection.readyState >= 1) {
+  if (isConnected || mongoose.connection.readyState === 1) {
     isConnected = true;
-    return;
-  }
-  if (!process.env.MONGO_URI) {
-    console.warn('⚠️ MONGO_URI is not defined. In Vercel, configure MONGO_URI under Project Settings -> Environment Variables.');
     return;
   }
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(MONGO_URI, {
+      serverSelectionTimeoutMS: 5000,
+    });
     isConnected = true;
     console.log('MongoDB Connected Successfully to travel_booking_db');
   } catch (err) {
-    console.error('MongoDB Connection Error:', err.message);
+    console.error('MongoDB Connection Warning:', err.message);
   }
 }
+
+// Initial connection
 connectDB();
 
-// Ensure DB is connected for API requests
+// Middleware to ensure connection before handling API routes
 app.use(async (req, res, next) => {
   if (req.path.startsWith('/api') && req.path !== '/api/health') {
-    await connectDB();
+    if (mongoose.connection.readyState !== 1) {
+      await connectDB();
+    }
   }
   next();
 });
@@ -70,7 +74,7 @@ app.get('*', (req, res) => {
 if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server running at http://localhost:${PORT}`);
   });
 }
 
