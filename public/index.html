@@ -1,14 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Travel & Tour Booking System | Explore Historical Wonders</title>
-  <meta name="description" content="Book curated tour packages to world-famous historical destinations. Heritage sites, ancient ruins, monuments and wonders await." />
+  <title>TourQuest | World Heritage & Tour Booking System</title>
+  <meta name="description" content="Explore and book curated historical tour packages, ancient ruins, and world wonders with instant confirmation and secure payment." />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -16,26 +17,27 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="mainNavbar">
   <div class="container">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-      <i class="bi bi-globe-asia-australia fs-4 text-warning"></i>
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#" onclick="showSection('explore')">
+      <i class="bi bi-compass fs-3 text-warning"></i>
       <span class="brand-name">TourQuest</span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
-        <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('explore')"><i class="bi bi-compass me-1"></i>Explore</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('packages')"><i class="bi bi-bag-check me-1"></i>Packages</a></li>
-        <li class="nav-item" id="myBookingsNav" style="display:none"><a class="nav-link" href="#" onclick="showSection('my-bookings')"><i class="bi bi-calendar2-check me-1"></i>My Bookings</a></li>
-        <li class="nav-item" id="adminNav" style="display:none"><a class="nav-link" href="#" onclick="showSection('admin')"><i class="bi bi-speedometer2 me-1"></i>Admin</a></li>
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('explore')"><i class="bi bi-globe-americas me-1 text-warning"></i>Destinations</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('packages')"><i class="bi bi-box-seam me-1 text-warning"></i>Packages</a></li>
+        <li class="nav-item" id="myBookingsNav" style="display:none"><a class="nav-link" href="#" onclick="showSection('my-bookings')"><i class="bi bi-calendar2-check me-1 text-warning"></i>My Bookings</a></li>
+        <li class="nav-item" id="adminNav" style="display:none"><a class="nav-link" href="#" onclick="showSection('admin')"><i class="bi bi-speedometer2 me-1 text-warning"></i>Admin</a></li>
         <li class="nav-item" id="authNav">
-          <button class="btn btn-outline-warning btn-sm px-3" onclick="showSection('auth')"><i class="bi bi-person me-1"></i>Login / Register</button>
+          <button class="btn btn-outline-warning btn-sm px-3 rounded-pill" onclick="showSection('auth')"><i class="bi bi-person me-1"></i>Sign In / Register</button>
         </li>
         <li class="nav-item" id="userNav" style="display:none">
-          <div class="d-flex align-items-center gap-2">
-            <span class="text-warning fw-semibold small" id="userGreeting"></span>
-            <button class="btn btn-outline-light btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right"></i></button>
+          <div class="d-flex align-items-center gap-2 bg-dark px-3 py-1 rounded-pill border border-secondary">
+            <i class="bi bi-person-circle text-warning"></i>
+            <span class="text-light fw-semibold small" id="userGreeting"></span>
+            <button class="btn btn-sm text-secondary p-0 ms-2" title="Logout" onclick="logout()"><i class="bi bi-box-arrow-right fs-6 text-danger"></i></button>
           </div>
         </li>
       </ul>
@@ -45,26 +47,29 @@
 
 <!-- HERO SECTION -->
 <section class="hero-banner" id="heroSection">
-  <div class="container text-center py-3">
-    <p class="text-warning fw-semibold mb-2 letter-spacing">✦ DBMS Mini Project — Aaron De Souza (24CE202) ✦</p>
+  <div class="container text-center py-4">
+    <p class="text-warning fw-semibold mb-2 letter-spacing text-uppercase">✦ DBMS Mini Project — Aaron De Souza (24CE202) ✦</p>
     <h1 class="display-3 fw-bold mb-3" style="font-family:'Playfair Display',serif;">Explore the World's<br><span class="text-warning">Historical Wonders</span></h1>
-    <p class="lead mb-4 opacity-75">Curated heritage tours, ancient ruins, and iconic monuments — all in one booking platform.</p>
+    <p class="lead mb-4 opacity-75 max-w-700 mx-auto">Discover iconic monuments, sacred temples, and ancient ruins with customized hotels, seamless transport, and instant booking confirmation.</p>
     <div class="d-flex justify-content-center gap-3 flex-wrap">
-      <button class="btn btn-warning btn-lg px-4 fw-semibold" onclick="showSection('explore')"><i class="bi bi-search me-2"></i>Explore Destinations</button>
-      <button class="btn btn-outline-light btn-lg px-4" onclick="showSection('packages')"><i class="bi bi-bag me-2"></i>View Packages</button>
+      <button class="btn btn-warning btn-lg px-4 fw-semibold rounded-pill" onclick="showSection('explore')"><i class="bi bi-compass me-2"></i>Explore Destinations</button>
+      <button class="btn btn-outline-light btn-lg px-4 rounded-pill" onclick="showSection('packages')"><i class="bi bi-bag-check me-2"></i>View Tour Packages</button>
     </div>
   </div>
 </section>
 
 <!-- MAIN APP CONTAINER -->
-<main class="container py-4" id="appMain">
+<main class="container py-5" id="appMain">
 
   <!-- EXPLORE SECTION -->
   <section id="section-explore" class="app-section">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="section-title"><i class="bi bi-globe2 me-2 text-warning"></i>Destinations</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+      <div>
+        <h2 class="section-title mb-1"><i class="bi bi-globe-central-south me-2 text-warning"></i>Featured Destinations</h2>
+        <p class="text-muted small mb-0">High-resolution photographic collection of the world's greatest heritage landmarks</p>
+      </div>
       <div id="addDestBtn" style="display:none">
-        <button class="btn btn-warning btn-sm px-3" onclick="showAddDestinationModal()"><i class="bi bi-plus-circle me-1"></i>Add Destination</button>
+        <button class="btn btn-warning btn-sm px-3 rounded-pill" onclick="showAddDestinationModal()"><i class="bi bi-plus-circle me-1"></i>Add Destination</button>
       </div>
     </div>
     <div class="row g-4" id="destinationsGrid">
@@ -74,7 +79,10 @@
 
   <!-- PACKAGES SECTION -->
   <section id="section-packages" class="app-section d-none">
-    <h2 class="section-title mb-4"><i class="bi bi-bag-check me-2 text-warning"></i>Tour Packages</h2>
+    <div class="mb-4">
+      <h2 class="section-title mb-1"><i class="bi bi-box-seam me-2 text-warning"></i>Curated Tour Packages</h2>
+      <p class="text-muted small mb-0">Hand-picked itineraries complete with historic tours, accommodations, and transit</p>
+    </div>
     <div class="row g-4" id="packagesGrid">
       <div class="col-12 text-center py-5"><div class="spinner-border text-warning" role="status"></div></div>
     </div>
@@ -84,30 +92,40 @@
   <section id="section-auth" class="app-section d-none">
     <div class="row justify-content-center">
       <div class="col-md-5">
-        <div class="auth-card p-4">
-          <ul class="nav nav-pills mb-4 justify-content-center" id="authTabs">
-            <li class="nav-item"><button class="nav-link active" id="loginTab" onclick="switchAuthTab('login')">Login</button></li>
-            <li class="nav-item"><button class="nav-link" id="registerTab" onclick="switchAuthTab('register')">Register</button></li>
+        <div class="auth-card p-4 p-md-5">
+          <ul class="nav nav-pills mb-4 justify-content-center gap-2" id="authTabs">
+            <li class="nav-item"><button class="nav-link active" id="loginTab" onclick="switchAuthTab('login')">Sign In</button></li>
+            <li class="nav-item"><button class="nav-link" id="registerTab" onclick="switchAuthTab('register')">Create Account</button></li>
           </ul>
           <!-- Login -->
           <div id="loginForm">
             <h4 class="text-center mb-3 fw-bold">Welcome Back</h4>
-            <div id="loginError" class="alert alert-danger d-none"></div>
-            <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" id="loginEmail" placeholder="admin@tourbooking.com" /></div>
-            <div class="mb-3"><label class="form-label">Password</label><input type="password" class="form-control" id="loginPassword" placeholder="••••••••" /></div>
-            <button class="btn btn-warning w-100 fw-semibold" onclick="doLogin()"><i class="bi bi-box-arrow-in-right me-2"></i>Login</button>
-            <p class="text-center small mt-3 text-muted">Admin: admin@tourbooking.com / admin123<br>Traveller: traveller@tourbooking.com / user123</p>
+            <div id="loginError" class="alert alert-danger d-none py-2 small"></div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Email Address</label>
+              <input type="email" class="form-control" id="loginEmail" placeholder="admin@tourbooking.com" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Password</label>
+              <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" />
+            </div>
+            <button class="btn btn-warning w-100 fw-bold py-2 mt-2" onclick="doLogin()"><i class="bi bi-box-arrow-in-right me-2"></i>Sign In</button>
+            <div class="p-3 bg-light rounded-3 mt-4 text-center small text-muted border">
+              <strong>Quick Demo Logins:</strong><br/>
+              👑 <b>Admin:</b> admin@tourbooking.com / admin123<br/>
+              🧳 <b>Traveller:</b> traveller@tourbooking.com / user123
+            </div>
           </div>
           <!-- Register -->
           <div id="registerForm" class="d-none">
-            <h4 class="text-center mb-3 fw-bold">Create Account</h4>
-            <div id="registerError" class="alert alert-danger d-none"></div>
-            <div id="registerSuccess" class="alert alert-success d-none"></div>
-            <div class="mb-3"><label class="form-label">Full Name</label><input type="text" class="form-control" id="regName" placeholder="Your Name" /></div>
-            <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" id="regEmail" placeholder="you@example.com" /></div>
-            <div class="mb-3"><label class="form-label">Phone</label><input type="text" class="form-control" id="regPhone" placeholder="9XXXXXXXXX" /></div>
-            <div class="mb-3"><label class="form-label">Password</label><input type="password" class="form-control" id="regPassword" placeholder="Minimum 6 characters" /></div>
-            <button class="btn btn-warning w-100 fw-semibold" onclick="doRegister()"><i class="bi bi-person-plus me-2"></i>Create Account</button>
+            <h4 class="text-center mb-3 fw-bold">Create Free Account</h4>
+            <div id="registerError" class="alert alert-danger d-none py-2 small"></div>
+            <div id="registerSuccess" class="alert alert-success d-none py-2 small"></div>
+            <div class="mb-3"><label class="form-label fw-semibold small">Full Name</label><input type="text" class="form-control" id="regName" placeholder="Aaron De Souza" /></div>
+            <div class="mb-3"><label class="form-label fw-semibold small">Email Address</label><input type="email" class="form-control" id="regEmail" placeholder="aaron@example.com" /></div>
+            <div class="mb-3"><label class="form-label fw-semibold small">Phone Number</label><input type="text" class="form-control" id="regPhone" placeholder="9876543210" /></div>
+            <div class="mb-3"><label class="form-label fw-semibold small">Password</label><input type="password" class="form-control" id="regPassword" placeholder="Minimum 6 characters" /></div>
+            <button class="btn btn-warning w-100 fw-bold py-2 mt-2" onclick="doRegister()"><i class="bi bi-person-plus me-2"></i>Register Now</button>
           </div>
         </div>
       </div>
@@ -117,33 +135,57 @@
   <!-- BOOKING SECTION -->
   <section id="section-booking" class="app-section d-none">
     <div class="row justify-content-center">
-      <div class="col-md-7">
-        <h2 class="section-title mb-4"><i class="bi bi-calendar2-plus me-2 text-warning"></i>Book Your Trip</h2>
-        <div class="booking-card p-4">
-          <div id="bookingError" class="alert alert-danger d-none"></div>
+      <div class="col-lg-8">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <h2 class="section-title mb-0"><i class="bi bi-calendar2-check me-2 text-warning"></i>Customize & Book Tour</h2>
+          <button class="btn btn-outline-secondary btn-sm" onclick="showSection('packages')"><i class="bi bi-arrow-left me-1"></i>Back to Packages</button>
+        </div>
+        <div class="booking-card p-4 p-md-5">
+          <div id="bookingError" class="alert alert-danger d-none py-2 small"></div>
+          
           <div id="selectedPackageInfo" class="mb-4"></div>
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Select Hotel</label>
-            <select class="form-select" id="hotelSelect" onchange="updateCostBreakdown()"><option value="">-- Choose Hotel --</option></select>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold"><i class="bi bi-building me-1 text-warning"></i>Select Accommodation</label>
+              <select class="form-select" id="hotelSelect" onchange="updateCostBreakdown()">
+                <option value="">-- Choose Hotel --</option>
+              </select>
+              <small class="text-muted">Prices are computed per night for package duration.</small>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold"><i class="bi bi-airplane me-1 text-warning"></i>Select Transit Mode</label>
+              <select class="form-select" id="transportSelect" onchange="updateCostBreakdown()">
+                <option value="">-- Choose Transport --</option>
+              </select>
+              <small class="text-muted">Direct connection options for this itinerary.</small>
+            </div>
           </div>
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Select Transport</label>
-            <select class="form-select" id="transportSelect" onchange="updateCostBreakdown()"><option value="">-- Choose Transport --</option></select>
-          </div>
+
           <div class="mb-4">
-            <label class="form-label fw-semibold">Travel Date</label>
-            <input type="date" class="form-control" id="travelDate" />
+            <label class="form-label fw-semibold"><i class="bi bi-calendar3 me-1 text-warning"></i>Departure / Travel Date</label>
+            <input type="date" class="form-control" id="travelDate" onchange="updateCostBreakdown()" />
           </div>
-          <!-- Cost Breakdown -->
+
+          <!-- Dynamic Cost Breakdown Box -->
           <div class="cost-breakdown-box mb-4" id="costBreakdown" style="display:none">
-            <h6 class="fw-bold mb-3"><i class="bi bi-receipt me-2 text-warning"></i>Cost Breakdown</h6>
-            <div class="d-flex justify-content-between mb-1"><span>Package Price</span><span id="cb-package">₹0</span></div>
-            <div class="d-flex justify-content-between mb-1"><span>Hotel (<span id="cb-nights">0</span> nights)</span><span id="cb-hotel">₹0</span></div>
-            <div class="d-flex justify-content-between mb-1"><span>Transport</span><span id="cb-transport">₹0</span></div>
-            <hr/>
-            <div class="d-flex justify-content-between fw-bold fs-5"><span>Total</span><span class="text-warning" id="cb-total">₹0</span></div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-receipt me-2 text-warning"></i>Live Fare Estimate</h6>
+              <span class="badge bg-dark text-warning px-2 py-1">All-Inclusive</span>
+            </div>
+            <div class="d-flex justify-content-between mb-1 text-secondary small"><span>Base Tour Package</span><span class="text-dark fw-semibold" id="cb-package">₹0</span></div>
+            <div class="d-flex justify-content-between mb-1 text-secondary small"><span>Hotel Stay (<span id="cb-nights">0</span> nights)</span><span class="text-dark fw-semibold" id="cb-hotel">₹0</span></div>
+            <div class="d-flex justify-content-between mb-1 text-secondary small"><span>Transit Fare</span><span class="text-dark fw-semibold" id="cb-transport">₹0</span></div>
+            <hr class="my-2"/>
+            <div class="d-flex justify-content-between align-items-center fw-bold fs-5">
+              <span>Total Payable</span>
+              <span class="text-warning fs-4" id="cb-total">₹0</span>
+            </div>
           </div>
-          <button class="btn btn-warning w-100 fw-bold fs-6 py-2" onclick="confirmBooking()"><i class="bi bi-check2-circle me-2"></i>Confirm Booking</button>
+
+          <button class="btn btn-warning w-100 fw-bold fs-5 py-3 rounded-3 shadow-sm" onclick="confirmBooking()">
+            <i class="bi bi-lock-fill me-2"></i>Proceed to Secure Payment
+          </button>
         </div>
       </div>
     </div>
@@ -152,21 +194,159 @@
   <!-- PAYMENT SECTION -->
   <section id="section-payment" class="app-section d-none">
     <div class="row justify-content-center">
-      <div class="col-md-6">
-        <h2 class="section-title mb-4"><i class="bi bi-credit-card me-2 text-warning"></i>Complete Payment</h2>
-        <div class="booking-card p-4">
-          <div id="paymentError" class="alert alert-danger d-none"></div>
-          <div id="paymentBookingInfo" class="mb-4"></div>
-          <div class="mb-4">
-            <label class="form-label fw-semibold">Payment Mode</label>
-            <div class="row g-2">
-              <div class="col-6"><label class="payment-option"><input type="radio" name="paymentMode" value="UPI" /> <i class="bi bi-phone me-1"></i>UPI</label></div>
-              <div class="col-6"><label class="payment-option"><input type="radio" name="paymentMode" value="Credit Card" /> <i class="bi bi-credit-card me-1"></i>Credit Card</label></div>
-              <div class="col-6"><label class="payment-option"><input type="radio" name="paymentMode" value="Debit Card" /> <i class="bi bi-credit-card-2-front me-1"></i>Debit Card</label></div>
-              <div class="col-6"><label class="payment-option"><input type="radio" name="paymentMode" value="Net Banking" /> <i class="bi bi-bank me-1"></i>Net Banking</label></div>
+      <div class="col-lg-8">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <h2 class="section-title mb-0"><i class="bi bi-shield-lock-fill me-2 text-warning"></i>Payment Gateway</h2>
+          <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2"><i class="bi bi-shield-check me-1"></i>256-bit SSL Encrypted</span>
+        </div>
+
+        <div class="row g-4">
+          <!-- Order Summary Column -->
+          <div class="col-md-5 order-md-2">
+            <div id="paymentBookingInfo"></div>
+          </div>
+
+          <!-- Payment Methods Column -->
+          <div class="col-md-7 order-md-1">
+            <div class="booking-card p-4">
+              <div id="paymentError" class="alert alert-danger d-none py-2 small"></div>
+
+              <label class="form-label fw-bold mb-2">Select Payment Method</label>
+              
+              <!-- Tab Selectors -->
+              <div class="payment-tabs">
+                <div class="payment-tab-btn active" id="tabBtn-upi" onclick="selectPaymentTab('UPI')">
+                  <i class="bi bi-qr-code-scan"></i>
+                  <span>UPI / QR</span>
+                </div>
+                <div class="payment-tab-btn" id="tabBtn-credit" onclick="selectPaymentTab('Credit Card')">
+                  <i class="bi bi-credit-card"></i>
+                  <span>Credit Card</span>
+                </div>
+                <div class="payment-tab-btn" id="tabBtn-debit" onclick="selectPaymentTab('Debit Card')">
+                  <i class="bi bi-credit-card-2-front"></i>
+                  <span>Debit Card</span>
+                </div>
+                <div class="payment-tab-btn" id="tabBtn-netbanking" onclick="selectPaymentTab('Net Banking')">
+                  <i class="bi bi-bank"></i>
+                  <span>Net Banking</span>
+                </div>
+              </div>
+
+              <!-- UPI FORM -->
+              <div id="payForm-upi" class="pay-form-panel">
+                <div class="upi-qr-box mb-3">
+                  <p class="small fw-semibold text-muted mb-2">Scan & Pay via any UPI App</p>
+                  <div class="upi-qr-svg mb-2">
+                    <svg width="150" height="150" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="100" height="100" fill="white"/>
+                      <path d="M10 10H35V35H10V10ZM15 15V30H30V15H15Z" fill="#141824"/>
+                      <rect x="19" y="19" width="7" height="7" fill="#c59d5f"/>
+                      <path d="M65 10H90V35H65V10ZM70 15V30H85V15H70Z" fill="#141824"/>
+                      <rect x="74" y="19" width="7" height="7" fill="#c59d5f"/>
+                      <path d="M10 65H35V90H10V65ZM15 70V85H30V70H15Z" fill="#141824"/>
+                      <rect x="19" y="74" width="7" height="7" fill="#c59d5f"/>
+                      <rect x="42" y="12" width="6" height="6" fill="#141824"/>
+                      <rect x="52" y="20" width="6" height="12" fill="#141824"/>
+                      <rect x="42" y="42" width="16" height="16" fill="#c59d5f"/>
+                      <rect x="65" y="45" width="8" height="8" fill="#141824"/>
+                      <rect x="80" y="55" width="10" height="6" fill="#141824"/>
+                      <rect x="42" y="70" width="6" height="14" fill="#141824"/>
+                      <rect x="54" y="80" width="12" height="6" fill="#141824"/>
+                      <rect x="75" y="75" width="15" height="15" fill="#141824"/>
+                    </svg>
+                  </div>
+                  <div class="d-flex justify-content-center gap-2 flex-wrap">
+                    <span class="upi-app-btn"><i class="bi bi-google text-primary"></i> GPay</span>
+                    <span class="upi-app-btn"><i class="bi bi-phone text-purple"></i> PhonePe</span>
+                    <span class="upi-app-btn"><i class="bi bi-wallet2 text-info"></i> Paytm</span>
+                    <span class="upi-app-btn"><i class="bi bi-shield-check text-success"></i> BHIM</span>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Or enter Virtual Payment Address (UPI ID)</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-at"></i></span>
+                    <input type="text" class="form-control" id="upiIdInput" placeholder="yourname@okhdfcbank" value="traveller@okhdfcbank" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- CARD FORM (Credit & Debit) -->
+              <div id="payForm-card" class="pay-form-panel d-none">
+                <!-- Virtual Card Visual -->
+                <div class="virtual-card">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="badge bg-warning text-dark fw-bold px-2 py-1" id="cardTypeLabel">CREDIT CARD</span>
+                    <i class="bi bi-wifi fs-4 opacity-75"></i>
+                  </div>
+                  <div class="card-chip"></div>
+                  <div class="card-number-display" id="cardNumPreview">4532 •••• •••• 8920</div>
+                  <div class="card-info-row">
+                    <div>
+                      <div>Card Holder</div>
+                      <div class="card-info-val" id="cardNamePreview">AARON DE SOUZA</div>
+                    </div>
+                    <div>
+                      <div>Expires</div>
+                      <div class="card-info-val" id="cardExpPreview">08/29</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Card Number</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-credit-card"></i></span>
+                    <input type="text" class="form-control" id="cardNumInput" maxlength="19" placeholder="4532 8901 2345 8920" value="4532 8901 2345 8920" oninput="updateCardPreview()" />
+                  </div>
+                </div>
+                <div class="row g-2 mb-3">
+                  <div class="col-6">
+                    <label class="form-label small fw-semibold">Expiry Date</label>
+                    <input type="text" class="form-control" id="cardExpInput" maxlength="5" placeholder="MM/YY" value="08/29" oninput="updateCardPreview()" />
+                  </div>
+                  <div class="col-6">
+                    <label class="form-label small fw-semibold">CVV / CVC</label>
+                    <input type="password" class="form-control" id="cardCvvInput" maxlength="4" placeholder="•••" value="882" />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Cardholder Name</label>
+                  <input type="text" class="form-control" id="cardNameInput" placeholder="Name on Card" value="Aaron De Souza" oninput="updateCardPreview()" />
+                </div>
+              </div>
+
+              <!-- NET BANKING FORM -->
+              <div id="payForm-netbanking" class="pay-form-panel d-none">
+                <label class="form-label small fw-semibold">Popular Indian Banks</label>
+                <div class="bank-grid">
+                  <div class="bank-tile selected" onclick="selectBank(this, 'HDFC Bank')"><i class="bi bi-bank2 d-block fs-4 text-primary mb-1"></i>HDFC</div>
+                  <div class="bank-tile" onclick="selectBank(this, 'State Bank of India')"><i class="bi bi-bank2 d-block fs-4 text-info mb-1"></i>SBI</div>
+                  <div class="bank-tile" onclick="selectBank(this, 'ICICI Bank')"><i class="bi bi-bank2 d-block fs-4 text-danger mb-1"></i>ICICI</div>
+                  <div class="bank-tile" onclick="selectBank(this, 'Axis Bank')"><i class="bi bi-bank2 d-block fs-4 text-danger-emphasis mb-1"></i>Axis</div>
+                  <div class="bank-tile" onclick="selectBank(this, 'Kotak Mahindra')"><i class="bi bi-bank2 d-block fs-4 text-primary-emphasis mb-1"></i>Kotak</div>
+                  <div class="bank-tile" onclick="selectBank(this, 'Punjab National')"><i class="bi bi-bank2 d-block fs-4 text-warning mb-1"></i>PNB</div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Or Select Other Bank</label>
+                  <select class="form-select" id="otherBankSelect">
+                    <option>HDFC Bank</option>
+                    <option>State Bank of India</option>
+                    <option>ICICI Bank</option>
+                    <option>Axis Bank</option>
+                    <option>Bank of Baroda</option>
+                    <option>Canara Bank</option>
+                    <option>Union Bank of India</option>
+                  </select>
+                </div>
+              </div>
+
+              <button class="btn btn-success w-100 fw-bold py-3 fs-5 rounded-3 shadow-sm mt-3" id="paySubmitBtn" onclick="processPayment()">
+                <i class="bi bi-check-circle-fill me-2"></i>Authorize & Complete Payment
+              </button>
             </div>
           </div>
-          <button class="btn btn-success w-100 fw-bold py-2" onclick="processPayment()"><i class="bi bi-shield-check me-2"></i>Pay Now & Confirm</button>
         </div>
       </div>
     </div>
@@ -175,12 +355,12 @@
   <!-- RECEIPT SECTION -->
   <section id="section-receipt" class="app-section d-none">
     <div class="row justify-content-center">
-      <div class="col-md-7">
-        <h2 class="section-title mb-4"><i class="bi bi-file-earmark-check me-2 text-success"></i>Booking Confirmed!</h2>
+      <div class="col-lg-8">
         <div class="receipt-box" id="receiptContent"></div>
-        <div class="d-flex gap-3 mt-4">
-          <button class="btn btn-outline-warning" onclick="showSection('explore')"><i class="bi bi-compass me-2"></i>Explore More</button>
-          <button class="btn btn-warning" onclick="showSection('my-bookings')"><i class="bi bi-list-check me-2"></i>My Bookings</button>
+        <div class="d-flex justify-content-center gap-3 mt-4 no-print flex-wrap">
+          <button class="btn btn-outline-dark px-4 py-2" onclick="window.print()"><i class="bi bi-printer me-2"></i>Print Voucher</button>
+          <button class="btn btn-warning px-4 py-2 fw-semibold" onclick="showSection('my-bookings')"><i class="bi bi-calendar-check me-2"></i>Go to My Bookings</button>
+          <button class="btn btn-outline-secondary px-4 py-2" onclick="showSection('explore')"><i class="bi bi-compass me-2"></i>Explore More Tours</button>
         </div>
       </div>
     </div>
@@ -188,31 +368,32 @@
 
   <!-- MY BOOKINGS SECTION -->
   <section id="section-my-bookings" class="app-section d-none">
-    <h2 class="section-title mb-4"><i class="bi bi-calendar2-check me-2 text-warning"></i>My Bookings</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+      <h2 class="section-title mb-0"><i class="bi bi-calendar2-check me-2 text-warning"></i>My Tour Bookings</h2>
+      <button class="btn btn-outline-warning btn-sm" onclick="showSection('packages')"><i class="bi bi-plus-circle me-1"></i>Book New Tour</button>
+    </div>
     <div id="myBookingsList">
       <div class="text-center py-5"><div class="spinner-border text-warning" role="status"></div></div>
     </div>
   </section>
 
-  <!-- DESTINATION DETAIL / REVIEW SECTION -->
-  <section id="section-destination-detail" class="app-section d-none">
-    <div id="destinationDetailContent"></div>
-  </section>
-
   <!-- ADMIN SECTION -->
   <section id="section-admin" class="app-section d-none">
-    <h2 class="section-title mb-4"><i class="bi bi-speedometer2 me-2 text-warning"></i>Admin Dashboard</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+      <h2 class="section-title mb-0"><i class="bi bi-speedometer2 me-2 text-warning"></i>Admin Management Console</h2>
+      <button class="btn btn-warning btn-sm" onclick="showAddDestinationModal()"><i class="bi bi-plus-lg me-1"></i>Add New Destination</button>
+    </div>
     <!-- Stats Cards -->
     <div class="row g-3 mb-4" id="adminStats">
-      <div class="col-sm-3"><div class="stat-card text-center p-3"><i class="bi bi-people fs-2 text-warning mb-2"></i><div class="fw-bold fs-3" id="stat-users">—</div><div class="text-muted small">Travellers</div></div></div>
-      <div class="col-sm-3"><div class="stat-card text-center p-3"><i class="bi bi-calendar-check fs-2 text-warning mb-2"></i><div class="fw-bold fs-3" id="stat-bookings">—</div><div class="text-muted small">Bookings</div></div></div>
-      <div class="col-sm-3"><div class="stat-card text-center p-3"><i class="bi bi-cash-stack fs-2 text-warning mb-2"></i><div class="fw-bold fs-3" id="stat-revenue">—</div><div class="text-muted small">Revenue</div></div></div>
-      <div class="col-sm-3"><div class="stat-card text-center p-3"><i class="bi bi-geo-alt fs-2 text-warning mb-2"></i><div class="fw-bold fs-3" id="stat-destinations">—</div><div class="text-muted small">Destinations</div></div></div>
+      <div class="col-sm-3"><div class="stat-card text-center p-3"><i class="bi bi-people fs-2 text-warning mb-2"></i><div class="fw-bold fs-3" id="stat-users">—</div><div class="text-muted small">Registered Travellers</div></div></div>
+      <div class="col-sm-3"><div class="stat-card text-center p-3"><i class="bi bi-calendar-check fs-2 text-warning mb-2"></i><div class="fw-bold fs-3" id="stat-bookings">—</div><div class="text-muted small">Total Bookings</div></div></div>
+      <div class="col-sm-3"><div class="stat-card text-center p-3"><i class="bi bi-cash-stack fs-2 text-warning mb-2"></i><div class="fw-bold fs-3 text-success" id="stat-revenue">—</div><div class="text-muted small">Total Revenue (₹)</div></div></div>
+      <div class="col-sm-3"><div class="stat-card text-center p-3"><i class="bi bi-geo-alt fs-2 text-warning mb-2"></i><div class="fw-bold fs-3" id="stat-destinations">—</div><div class="text-muted small">Active Destinations</div></div></div>
     </div>
     <!-- Admin Tabs -->
     <ul class="nav nav-tabs mb-4" id="adminTabs">
       <li class="nav-item"><button class="nav-link active" onclick="loadAdminTab('bookings', this)">All Bookings</button></li>
-      <li class="nav-item"><button class="nav-link" onclick="loadAdminTab('users', this)">Users</button></li>
+      <li class="nav-item"><button class="nav-link" onclick="loadAdminTab('users', this)">Registered Users</button></li>
     </ul>
     <div id="adminTabContent"></div>
   </section>
@@ -222,15 +403,15 @@
 <!-- DESTINATION DETAIL MODAL -->
 <div class="modal fade" id="destDetailModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content bg-dark text-light border-0">
+    <div class="modal-content bg-dark text-light border-0 shadow-lg">
       <div class="modal-header border-secondary">
-        <h5 class="modal-title" id="destModalTitle"></h5>
+        <h5 class="modal-title fw-bold" id="destModalTitle"></h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body" id="destModalBody"></div>
+      <div class="modal-body p-4" id="destModalBody"></div>
       <div class="modal-footer border-secondary">
-        <button class="btn btn-warning fw-semibold" onclick="goBookFromModal()"><i class="bi bi-bag-plus me-2"></i>Book a Package</button>
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-warning fw-semibold px-4" onclick="goBookFromModal()"><i class="bi bi-bag-plus me-2"></i>Book a Package</button>
+        <button class="btn btn-secondary px-3" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -239,25 +420,25 @@
 <!-- ADD DESTINATION MODAL (Admin) -->
 <div class="modal fade" id="addDestModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content bg-dark text-light border-0">
+    <div class="modal-content bg-dark text-light border-0 shadow-lg">
       <div class="modal-header border-secondary">
         <h5 class="modal-title">Add New Destination</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <div id="addDestError" class="alert alert-danger d-none"></div>
-        <div class="mb-3"><label class="form-label">Name</label><input type="text" class="form-control bg-dark text-light border-secondary" id="newDestName" /></div>
-        <div class="mb-3"><label class="form-label">Location</label><input type="text" class="form-control bg-dark text-light border-secondary" id="newDestLocation" /></div>
-        <div class="mb-3"><label class="form-label">Category</label>
+        <div id="addDestError" class="alert alert-danger d-none py-2 small"></div>
+        <div class="mb-3"><label class="form-label small fw-semibold">Destination Name</label><input type="text" class="form-control bg-dark text-light border-secondary" id="newDestName" placeholder="e.g. Petra Ancient City" /></div>
+        <div class="mb-3"><label class="form-label small fw-semibold">Location / Country</label><input type="text" class="form-control bg-dark text-light border-secondary" id="newDestLocation" placeholder="e.g. Ma'an Governorate, Jordan" /></div>
+        <div class="mb-3"><label class="form-label small fw-semibold">Category</label>
           <select class="form-select bg-dark text-light border-secondary" id="newDestCategory">
             <option>Heritage</option><option>Ancient Ruins</option><option>Monument</option><option>Wonder</option><option>Temple</option><option>Fort</option>
           </select>
         </div>
-        <div class="mb-3"><label class="form-label">Description</label><textarea class="form-control bg-dark text-light border-secondary" id="newDestDesc" rows="3"></textarea></div>
-        <div class="mb-3"><label class="form-label">Image URL (Unsplash recommended)</label><input type="url" class="form-control bg-dark text-light border-secondary" id="newDestImg" /></div>
+        <div class="mb-3"><label class="form-label small fw-semibold">Description</label><textarea class="form-control bg-dark text-light border-secondary" id="newDestDesc" rows="3" placeholder="Enter historical significance and tour details..."></textarea></div>
+        <div class="mb-3"><label class="form-label small fw-semibold">High-Res Image URL</label><input type="url" class="form-control bg-dark text-light border-secondary" id="newDestImg" placeholder="https://images.unsplash.com/..." /></div>
       </div>
       <div class="modal-footer border-secondary">
-        <button class="btn btn-warning fw-semibold" onclick="submitNewDestination()"><i class="bi bi-plus-circle me-1"></i>Add Destination</button>
+        <button class="btn btn-warning fw-semibold" onclick="submitNewDestination()"><i class="bi bi-plus-circle me-1"></i>Save Destination</button>
         <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>
@@ -265,8 +446,8 @@
 </div>
 
 <!-- TOAST -->
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="appToast" class="toast align-items-center text-bg-success border-0" role="alert">
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;">
+  <div id="appToast" class="toast align-items-center text-bg-success border-0 shadow" role="alert">
     <div class="d-flex">
       <div class="toast-body" id="toastMsg">Success!</div>
       <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
@@ -276,8 +457,10 @@
 
 <!-- FOOTER -->
 <footer class="app-footer text-center py-4 mt-5">
-  <p class="mb-1 opacity-75">Travel & Tour Booking & Exploration System</p>
-  <p class="small opacity-50">DBMS Lab Mini Project | Aaron De Souza (24CE202) | Padre Conceicao College of Engineering | Sem V 2026-27</p>
+  <div class="container">
+    <p class="mb-1 fw-semibold text-light">TourQuest — Travel & Tour Booking System</p>
+    <p class="small opacity-75 mb-0">DBMS Mini Project | Aaron De Souza (24CE202) | Padre Conceicao College of Engineering | Sem V 2026-27</p>
+  </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

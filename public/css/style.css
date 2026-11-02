@@ -1,4 +1,4 @@
-﻿/* =========================================
+/* =========================================
    Travel & Tour Booking System - style.css
    Aaron De Souza (24CE202) PCCE Sem V
    ========================================= */
@@ -6,16 +6,19 @@
 :root {
   --primary-gold: #c59d5f;
   --primary-gold-dark: #9c7336;
-  --dark-slate: #1a1f2c;
-  --dark-card: #1e2433;
-  --dark-card-hover: #252c3f;
+  --primary-gold-light: #e0be87;
+  --dark-slate: #141824;
+  --dark-navy: #1a2030;
+  --dark-card: #1e2538;
+  --dark-card-hover: #262f47;
   --soft-cream: #f8f6f2;
-  --text-muted-light: rgba(255,255,255,0.65);
+  --text-muted-light: rgba(255, 255, 255, 0.7);
+  --success-green: #10b981;
 }
 
 /* ---- BASE ---- */
 body {
-  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--soft-cream);
   color: #2c3e50;
   min-height: 100vh;
@@ -23,39 +26,40 @@ body {
 
 /* ---- NAVBAR ---- */
 #mainNavbar {
-  background: rgba(26, 31, 44, 0.97);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(197, 157, 95, 0.25);
-  padding: 0.7rem 0;
+  background: rgba(20, 24, 36, 0.96);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(197, 157, 95, 0.3);
+  padding: 0.75rem 0;
+  z-index: 1030;
 }
 
 .brand-name {
   font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
+  font-size: 1.55rem;
   font-weight: 700;
   color: #fff;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 /* ---- HERO ---- */
 .hero-banner {
-  background: linear-gradient(135deg, rgba(26, 31, 44, 0.92), rgba(62, 44, 28, 0.85)),
-              url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+  background: linear-gradient(135deg, rgba(16, 20, 30, 0.88), rgba(46, 32, 20, 0.82)),
+              url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1800&q=85') center/cover no-repeat;
   color: #ffffff;
-  padding: 6rem 0 5rem;
+  padding: 5.5rem 0 4.5rem;
   border-bottom: 4px solid var(--primary-gold);
   position: relative;
 }
 
 .letter-spacing {
   letter-spacing: 2px;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
 }
 
 /* ---- SECTION TITLES ---- */
 .section-title {
   font-family: 'Playfair Display', serif;
-  font-size: 1.9rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--dark-slate);
 }
@@ -63,34 +67,42 @@ body {
 /* ---- DESTINATION CARDS ---- */
 .place-card {
   border: none;
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
   background: #ffffff;
-  transition: transform 0.28s ease, box-shadow 0.28s ease;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
   cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .place-card:hover {
-  transform: translateY(-7px);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
 }
 
 .place-img-wrapper {
   position: relative;
-  height: 220px;
+  height: 230px;
   overflow: hidden;
+  background-color: #2a2e3d;
 }
 
 .place-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  object-position: center;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  image-rendering: auto;
+  filter: contrast(104%) brightness(98%);
 }
 
 .place-card:hover .place-img {
-  transform: scale(1.06);
+  transform: scale(1.08);
+  filter: contrast(106%) brightness(102%);
 }
 
 .badge-category {
@@ -99,187 +111,398 @@ body {
   left: 14px;
   background: linear-gradient(135deg, #c59d5f, #9c7336);
   color: #fff;
-  padding: 5px 12px;
+  padding: 5px 14px;
   border-radius: 20px;
   font-size: 0.78rem;
   font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  backdrop-filter: blur(4px);
 }
 
-.badge-rating {
+.badge-featured {
   position: absolute;
   top: 14px;
   right: 14px;
-  background: rgba(26, 31, 44, 0.85);
+  background: rgba(20, 24, 36, 0.85);
   color: #ffd700;
   padding: 4px 10px;
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 /* ---- PACKAGE CARDS ---- */
 .pkg-card {
   background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+  border-radius: 16px;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.08);
   border: none;
-  transition: transform 0.25s, box-shadow 0.25s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .pkg-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.13);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.14);
 }
 
-.pkg-header {
-  background: linear-gradient(135deg, var(--dark-slate), #2d3450);
+.pkg-img-wrapper {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background-color: #1e2433;
+}
+
+.pkg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.pkg-card:hover .pkg-img {
+  transform: scale(1.06);
+}
+
+.pkg-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(20, 24, 36, 0.9) 0%, rgba(20, 24, 36, 0.3) 60%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.2rem;
   color: #fff;
-  padding: 1.2rem 1.4rem;
 }
 
 .pkg-price-badge {
   background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
   color: #fff;
   padding: 6px 16px;
-  border-radius: 20px;
+  border-radius: 24px;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+  box-shadow: 0 4px 12px rgba(197, 157, 95, 0.35);
 }
 
 /* ---- AUTH CARD ---- */
 .auth-card {
   background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  border: 1px solid rgba(0,0,0,0.05);
 }
 
 .nav-pills .nav-link {
   color: var(--dark-slate);
   border-radius: 30px;
-  font-weight: 500;
+  font-weight: 600;
+  padding: 0.5rem 1.4rem;
 }
 
 .nav-pills .nav-link.active {
   background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(197, 157, 95, 0.3);
 }
 
 /* ---- BOOKING / PAYMENT ---- */
 .booking-card {
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.09);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.05);
 }
 
 .cost-breakdown-box {
-  background: #f1ede4;
+  background: #f7f4ec;
   border-left: 4px solid var(--primary-gold);
-  border-radius: 8px;
-  padding: 1rem;
-}
-
-.receipt-box {
-  border: 2px dashed #198754;
-  background: #f4fbf7;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1.2rem;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
 }
 
-/* Payment option radio buttons */
-.payment-option {
+/* ---- PAYMENT OPTIONS ---- */
+.payment-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .payment-tabs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.payment-tab-btn {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  padding: 12px 8px;
   background: #f8f9fa;
-  border: 2px solid #e9ecef;
-  border-radius: 10px;
-  padding: 0.65rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
   cursor: pointer;
-  font-weight: 500;
-  transition: border-color 0.2s, background 0.2s;
-  width: 100%;
-  user-select: none;
+  transition: all 0.2s ease;
+  color: #4a5568;
+  font-weight: 600;
+  font-size: 0.88rem;
 }
 
-.payment-option:has(input:checked) {
-  border-color: var(--primary-gold);
-  background: #fdf8f0;
+.payment-tab-btn i {
+  font-size: 1.4rem;
+  margin-bottom: 4px;
   color: var(--primary-gold-dark);
 }
 
-.payment-option input {
-  accent-color: var(--primary-gold);
+.payment-tab-btn:hover {
+  background: #fff;
+  border-color: var(--primary-gold);
+  transform: translateY(-2px);
+}
+
+.payment-tab-btn.active {
+  background: #fff9ee;
+  border-color: var(--primary-gold);
+  color: var(--dark-slate);
+  box-shadow: 0 4px 12px rgba(197, 157, 95, 0.2);
+}
+
+.payment-tab-btn.active i {
+  color: var(--primary-gold-dark);
+}
+
+/* Virtual Credit Card Simulation */
+.virtual-card {
+  background: linear-gradient(135deg, #1f2538 0%, #0d111c 100%);
+  border-radius: 16px;
+  padding: 1.4rem 1.6rem;
+  color: #fff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.virtual-card::after {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(197, 157, 95, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.card-chip {
+  width: 44px;
+  height: 32px;
+  background: linear-gradient(135deg, #ffd700, #b8860b);
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
+}
+
+.card-number-display {
+  font-family: 'Courier New', monospace;
+  font-size: 1.25rem;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  color: #e2e8f0;
+}
+
+.card-info-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #a0aec0;
+}
+
+.card-info-val {
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+
+/* UPI QR Code Container */
+.upi-qr-box {
+  background: #ffffff;
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.upi-qr-svg {
+  background: #fff;
+  padding: 10px;
+  border-radius: 12px;
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.upi-app-btn {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 8px 14px;
+  background: #fff;
+  font-weight: 600;
+  font-size: 0.82rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.upi-app-btn:hover {
+  background: #f8fafc;
+  border-color: var(--primary-gold);
+}
+
+/* Bank Selection Grid */
+.bank-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.bank-tile {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 6px;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: #fff;
+  transition: all 0.2s;
+}
+
+.bank-tile:hover, .bank-tile.selected {
+  border-color: var(--primary-gold);
+  background: #fff9ee;
+  color: var(--primary-gold-dark);
+}
+
+/* ---- RECEIPT VOUCHER ---- */
+.receipt-box {
+  background: #ffffff;
+  border: 2px solid #10b981;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.12);
+  position: relative;
+}
+
+.receipt-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-25deg);
+  font-size: 5rem;
+  font-weight: 900;
+  color: rgba(16, 185, 129, 0.05);
+  pointer-events: none;
+  letter-spacing: 10px;
+  user-select: none;
 }
 
 /* ---- BOOKING HISTORY ITEMS ---- */
 .booking-item {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.07);
-  padding: 1.2rem 1.5rem;
-  margin-bottom: 1rem;
-  border-left: 5px solid transparent;
-  transition: box-shadow 0.2s;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  padding: 1.3rem 1.6rem;
+  margin-bottom: 1.2rem;
+  border-left: 6px solid transparent;
+  transition: all 0.2s ease;
 }
 
-.booking-item.status-confirmed { border-left-color: #198754; }
-.booking-item.status-pending   { border-left-color: #fd7e14; }
-.booking-item.status-cancelled { border-left-color: #dc3545; }
+.booking-item:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.booking-item.status-confirmed { border-left-color: #10b981; }
+.booking-item.status-pending   { border-left-color: #f59e0b; }
+.booking-item.status-cancelled { border-left-color: #ef4444; }
 
 /* ---- ADMIN ---- */
 .stat-card {
   background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
   transition: transform 0.2s;
 }
 
 .stat-card:hover { transform: translateY(-4px); }
 
-.admin-table {
-  font-size: 0.88rem;
-}
-
 /* ---- REVIEWS ---- */
 .review-item {
   background: #f8f9fa;
-  border-radius: 10px;
-  padding: 0.9rem 1.1rem;
-  margin-bottom: 0.7rem;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 0.8rem;
+  border-left: 3px solid var(--primary-gold);
 }
-
-.star-rating { color: #ffc107; }
 
 /* ---- FOOTER ---- */
 .app-footer {
   background: var(--dark-slate);
-  color: rgba(255,255,255,0.6);
-  font-size: 0.85rem;
+  color: rgba(255,255,255,0.65);
+  font-size: 0.88rem;
   border-top: 3px solid var(--primary-gold);
 }
 
-/* ---- UTILITY ---- */
-.app-section { animation: fadeInUp 0.4s ease; }
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* ---- PRINT STYLES FOR RECEIPT ---- */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #section-receipt, #section-receipt * {
+    visibility: visible;
+  }
+  #section-receipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 0;
+  }
+  .no-print {
+    display: none !important;
+  }
 }
 
+/* Buttons */
 .btn-warning {
   background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
   border: none;
   color: #fff !important;
+  box-shadow: 0 4px 12px rgba(197, 157, 95, 0.25);
 }
 
 .btn-warning:hover {
   background: linear-gradient(135deg, var(--primary-gold-dark), #7a5a28);
   color: #fff !important;
+  box-shadow: 0 6px 16px rgba(197, 157, 95, 0.35);
 }
 
 .spinner-border.text-warning { color: var(--primary-gold) !important; }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: #f1f1f1; }
 ::-webkit-scrollbar-thumb { background: var(--primary-gold); border-radius: 4px; }

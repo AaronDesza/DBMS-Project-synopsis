@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
@@ -20,9 +20,12 @@ async function connectDB() {
 }
 connectDB().catch(err => console.error('MongoDB Connection Error:', err));
 
+// API Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/destinations', require('./routes/destinations'));
 app.use('/api/packages', require('./routes/packages'));
+app.use('/api/hotels', require('./routes/hotels'));
+app.use('/api/transport', require('./routes/transport'));
 app.use('/api/bookings', require('./routes/bookings'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api/reviews', require('./routes/reviews'));
