@@ -1,8 +1,14 @@
-# PHP/XAMPP project
+﻿# Dependencies
+node_modules/
+
+# Environment variables (sensitive)
+.env
+
+# PHP/XAMPP legacy
 config/db.php
 
 # OS & editor
 .DS_Store
-Thumbs.db
+Thumbbs.db
 .vscode/
 *.log

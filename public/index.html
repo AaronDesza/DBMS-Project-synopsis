@@ -1,0 +1,286 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel & Tour Booking System | Explore Historical Wonders</title>
+  <meta name="description" content="Book curated tour packages to world-famous historical destinations. Heritage sites, ancient ruins, monuments and wonders await." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="mainNavbar">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+      <i class="bi bi-globe-asia-australia fs-4 text-warning"></i>
+      <span class="brand-name">TourQuest</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('explore')"><i class="bi bi-compass me-1"></i>Explore</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('packages')"><i class="bi bi-bag-check me-1"></i>Packages</a></li>
+        <li class="nav-item" id="myBookingsNav" style="display:none"><a class="nav-link" href="#" onclick="showSection('my-bookings')"><i class="bi bi-calendar2-check me-1"></i>My Bookings</a></li>
+        <li class="nav-item" id="adminNav" style="display:none"><a class="nav-link" href="#" onclick="showSection('admin')"><i class="bi bi-speedometer2 me-1"></i>Admin</a></li>
+        <li class="nav-item" id="authNav">
+          <button class="btn btn-outline-warning btn-sm px-3" onclick="showSection('auth')"><i class="bi bi-person me-1"></i>Login / Register</button>
+        </li>
+        <li class="nav-item" id="userNav" style="display:none">
+          <div class="d-flex align-items-center gap-2">
+            <span class="text-warning fw-semibold small" id="userGreeting"></span>
+            <button class="btn btn-outline-light btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right"></i></button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero-banner" id="heroSection">
+  <div class="container text-center py-3">
+    <p class="text-warning fw-semibold mb-2 letter-spacing">✦ DBMS Mini Project — Aaron De Souza (24CE202) ✦</p>
+    <h1 class="display-3 fw-bold mb-3" style="font-family:'Playfair Display',serif;">Explore the World's<br><span class="text-warning">Historical Wonders</span></h1>
+    <p class="lead mb-4 opacity-75">Curated heritage tours, ancient ruins, and iconic monuments — all in one booking platform.</p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <button class="btn btn-warning btn-lg px-4 fw-semibold" onclick="showSection('explore')"><i class="bi bi-search me-2"></i>Explore Destinations</button>
+      <button class="btn btn-outline-light btn-lg px-4" onclick="showSection('packages')"><i class="bi bi-bag me-2"></i>View Packages</button>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN APP CONTAINER -->
+<main class="container py-4" id="appMain">
+
+  <!-- EXPLORE SECTION -->
+  <section id="section-explore" class="app-section">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="section-title"><i class="bi bi-globe2 me-2 text-warning"></i>Destinations</h2>
+      <div id="addDestBtn" style="display:none">
+        <button class="btn btn-warning btn-sm px-3" onclick="showAddDestinationModal()"><i class="bi bi-plus-circle me-1"></i>Add Destination</button>
+      </div>
+    </div>
+    <div class="row g-4" id="destinationsGrid">
+      <div class="col-12 text-center py-5"><div class="spinner-border text-warning" role="status"></div></div>
+    </div>
+  </section>
+
+  <!-- PACKAGES SECTION -->
+  <section id="section-packages" class="app-section d-none">
+    <h2 class="section-title mb-4"><i class="bi bi-bag-check me-2 text-warning"></i>Tour Packages</h2>
+    <div class="row g-4" id="packagesGrid">
+      <div class="col-12 text-center py-5"><div class="spinner-border text-warning" role="status"></div></div>
+    </div>
+  </section>
+
+  <!-- AUTH SECTION -->
+  <section id="section-auth" class="app-section d-none">
+    <div class="row justify-content-center">
+      <div class="col-md-5">
+        <div class="auth-card p-4">
+          <ul class="nav nav-pills mb-4 justify-content-center" id="authTabs">
+            <li class="nav-item"><button class="nav-link active" id="loginTab" onclick="switchAuthTab('login')">Login</button></li>
+            <li class="nav-item"><button class="nav-link" id="registerTab" onclick="switchAuthTab('register')">Register</button></li>
+          </ul>
+          <!-- Login -->
+          <div id="loginForm">
+            <h4 class="text-center mb-3 fw-bold">Welcome Back</h4>
+            <div id="loginError" class="alert alert-danger d-none"></div>
+            <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" id="loginEmail" placeholder="admin@tourbooking.com" /></div>
+            <div class="mb-3"><label class="form-label">Password</label><input type="password" class="form-control" id="loginPassword" placeholder="••••••••" /></div>
+            <button class="btn btn-warning w-100 fw-semibold" onclick="doLogin()"><i class="bi bi-box-arrow-in-right me-2"></i>Login</button>
+            <p class="text-center small mt-3 text-muted">Admin: admin@tourbooking.com / admin123<br>Traveller: traveller@tourbooking.com / user123</p>
+          </div>
+          <!-- Register -->
+          <div id="registerForm" class="d-none">
+            <h4 class="text-center mb-3 fw-bold">Create Account</h4>
+            <div id="registerError" class="alert alert-danger d-none"></div>
+            <div id="registerSuccess" class="alert alert-success d-none"></div>
+            <div class="mb-3"><label class="form-label">Full Name</label><input type="text" class="form-control" id="regName" placeholder="Your Name" /></div>
+            <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" id="regEmail" placeholder="you@example.com" /></div>
+            <div class="mb-3"><label class="form-label">Phone</label><input type="text" class="form-control" id="regPhone" placeholder="9XXXXXXXXX" /></div>
+            <div class="mb-3"><label class="form-label">Password</label><input type="password" class="form-control" id="regPassword" placeholder="Minimum 6 characters" /></div>
+            <button class="btn btn-warning w-100 fw-semibold" onclick="doRegister()"><i class="bi bi-person-plus me-2"></i>Create Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING SECTION -->
+  <section id="section-booking" class="app-section d-none">
+    <div class="row justify-content-center">
+      <div class="col-md-7">
+        <h2 class="section-title mb-4"><i class="bi bi-calendar2-plus me-2 text-warning"></i>Book Your Trip</h2>
+        <div class="booking-card p-4">
+          <div id="bookingError" class="alert alert-danger d-none"></div>
+          <div id="selectedPackageInfo" class="mb-4"></div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Select Hotel</label>
+            <select class="form-select" id="hotelSelect" onchange="updateCostBreakdown()"><option value="">-- Choose Hotel --</option></select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Select Transport</label>
+            <select class="form-select" id="transportSelect" onchange="updateCostBreakdown()"><option value="">-- Choose Transport --</option></select>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Travel Date</label>
+            <input type="date" class="form-control" id="travelDate" />
+          </div>
+          <!-- Cost Breakdown -->
+          <div class="cost-breakdown-box mb-4" id="costBreakdown" style="display:none">
+            <h6 class="fw-bold mb-3"><i class="bi bi-receipt me-2 text-warning"></i>Cost Breakdown</h6>
+            <div class="d-flex justify-content-between mb-1"><span>Package Price</span><span id="cb-package">₹0</span></div>
+            <div class="d-flex justify-content-between mb-1"><span>Hotel (<span id="cb-nights">0</span> nights)</span><span id="cb-hotel">₹0</span></div>
+            <div class="d-flex justify-content-between mb-1"><span>Transport</span><span id="cb-transport">₹0</span></div>
+            <hr/>
+            <div class="d-flex justify-content-between fw-bold fs-5"><span>Total</span><span class="text-warning" id="cb-total">₹0</span></div>
+          </div>
+          <button class="btn btn-warning w-100 fw-bold fs-6 py-2" onclick="confirmBooking()"><i class="bi bi-check2-circle me-2"></i>Confirm Booking</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAYMENT SECTION -->
+  <section id="section-payment" class="app-section d-none">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <h2 class="section-title mb-4"><i class="bi bi-credit-card me-2 text-warning"></i>Complete Payment</h2>
+        <div class="booking-card p-4">
+          <div id="paymentError" class="alert alert-danger d-none"></div>
+          <div id="paymentBookingInfo" class="mb-4"></div>
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Payment Mode</label>
+            <div class="row g-2">
+              <div class="col-6"><label class="payment-option"><input type="radio" name="paymentMode" value="UPI" /> <i class="bi bi-phone me-1"></i>UPI</label></div>
+              <div class="col-6"><label class="payment-option"><input type="radio" name="paymentMode" value="Credit Card" /> <i class="bi bi-credit-card me-1"></i>Credit Card</label></div>
+              <div class="col-6"><label class="payment-option"><input type="radio" name="paymentMode" value="Debit Card" /> <i class="bi bi-credit-card-2-front me-1"></i>Debit Card</label></div>
+              <div class="col-6"><label class="payment-option"><input type="radio" name="paymentMode" value="Net Banking" /> <i class="bi bi-bank me-1"></i>Net Banking</label></div>
+            </div>
+          </div>
+          <button class="btn btn-success w-100 fw-bold py-2" onclick="processPayment()"><i class="bi bi-shield-check me-2"></i>Pay Now & Confirm</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECEIPT SECTION -->
+  <section id="section-receipt" class="app-section d-none">
+    <div class="row justify-content-center">
+      <div class="col-md-7">
+        <h2 class="section-title mb-4"><i class="bi bi-file-earmark-check me-2 text-success"></i>Booking Confirmed!</h2>
+        <div class="receipt-box" id="receiptContent"></div>
+        <div class="d-flex gap-3 mt-4">
+          <button class="btn btn-outline-warning" onclick="showSection('explore')"><i class="bi bi-compass me-2"></i>Explore More</button>
+          <button class="btn btn-warning" onclick="showSection('my-bookings')"><i class="bi bi-list-check me-2"></i>My Bookings</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MY BOOKINGS SECTION -->
+  <section id="section-my-bookings" class="app-section d-none">
+    <h2 class="section-title mb-4"><i class="bi bi-calendar2-check me-2 text-warning"></i>My Bookings</h2>
+    <div id="myBookingsList">
+      <div class="text-center py-5"><div class="spinner-border text-warning" role="status"></div></div>
+    </div>
+  </section>
+
+  <!-- DESTINATION DETAIL / REVIEW SECTION -->
+  <section id="section-destination-detail" class="app-section d-none">
+    <div id="destinationDetailContent"></div>
+  </section>
+
+  <!-- ADMIN SECTION -->
+  <section id="section-admin" class="app-section d-none">
+    <h2 class="section-title mb-4"><i class="bi bi-speedometer2 me-2 text-warning"></i>Admin Dashboard</h2>
+    <!-- Stats Cards -->
+    <div class="row g-3 mb-4" id="adminStats">
+      <div class="col-sm-3"><div class="stat-card text-center p-3"><i class="bi bi-people fs-2 text-warning mb-2"></i><div class="fw-bold fs-3" id="stat-users">—</div><div class="text-muted small">Travellers</div></div></div>
+      <div class="col-sm-3"><div class="stat-card text-center p-3"><i class="bi bi-calendar-check fs-2 text-warning mb-2"></i><div class="fw-bold fs-3" id="stat-bookings">—</div><div class="text-muted small">Bookings</div></div></div>
+      <div class="col-sm-3"><div class="stat-card text-center p-3"><i class="bi bi-cash-stack fs-2 text-warning mb-2"></i><div class="fw-bold fs-3" id="stat-revenue">—</div><div class="text-muted small">Revenue</div></div></div>
+      <div class="col-sm-3"><div class="stat-card text-center p-3"><i class="bi bi-geo-alt fs-2 text-warning mb-2"></i><div class="fw-bold fs-3" id="stat-destinations">—</div><div class="text-muted small">Destinations</div></div></div>
+    </div>
+    <!-- Admin Tabs -->
+    <ul class="nav nav-tabs mb-4" id="adminTabs">
+      <li class="nav-item"><button class="nav-link active" onclick="loadAdminTab('bookings', this)">All Bookings</button></li>
+      <li class="nav-item"><button class="nav-link" onclick="loadAdminTab('users', this)">Users</button></li>
+    </ul>
+    <div id="adminTabContent"></div>
+  </section>
+
+</main>
+
+<!-- DESTINATION DETAIL MODAL -->
+<div class="modal fade" id="destDetailModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content bg-dark text-light border-0">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title" id="destModalTitle"></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="destModalBody"></div>
+      <div class="modal-footer border-secondary">
+        <button class="btn btn-warning fw-semibold" onclick="goBookFromModal()"><i class="bi bi-bag-plus me-2"></i>Book a Package</button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD DESTINATION MODAL (Admin) -->
+<div class="modal fade" id="addDestModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-light border-0">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title">Add New Destination</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="addDestError" class="alert alert-danger d-none"></div>
+        <div class="mb-3"><label class="form-label">Name</label><input type="text" class="form-control bg-dark text-light border-secondary" id="newDestName" /></div>
+        <div class="mb-3"><label class="form-label">Location</label><input type="text" class="form-control bg-dark text-light border-secondary" id="newDestLocation" /></div>
+        <div class="mb-3"><label class="form-label">Category</label>
+          <select class="form-select bg-dark text-light border-secondary" id="newDestCategory">
+            <option>Heritage</option><option>Ancient Ruins</option><option>Monument</option><option>Wonder</option><option>Temple</option><option>Fort</option>
+          </select>
+        </div>
+        <div class="mb-3"><label class="form-label">Description</label><textarea class="form-control bg-dark text-light border-secondary" id="newDestDesc" rows="3"></textarea></div>
+        <div class="mb-3"><label class="form-label">Image URL (Unsplash recommended)</label><input type="url" class="form-control bg-dark text-light border-secondary" id="newDestImg" /></div>
+      </div>
+      <div class="modal-footer border-secondary">
+        <button class="btn btn-warning fw-semibold" onclick="submitNewDestination()"><i class="bi bi-plus-circle me-1"></i>Add Destination</button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="appToast" class="toast align-items-center text-bg-success border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body" id="toastMsg">Success!</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="app-footer text-center py-4 mt-5">
+  <p class="mb-1 opacity-75">Travel & Tour Booking & Exploration System</p>
+  <p class="small opacity-50">DBMS Lab Mini Project | Aaron De Souza (24CE202) | Padre Conceicao College of Engineering | Sem V 2026-27</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
