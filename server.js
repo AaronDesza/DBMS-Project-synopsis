@@ -5,11 +5,12 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
+const publicPath = path.join(process.cwd(), 'public');
 
 // Core Middleware
 app.use(express.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(publicPath));
 
 // MongoDB Connection with Caching for Serverless (Vercel)
 let isConnected = false;
@@ -25,7 +26,7 @@ async function connectDB() {
   try {
     await mongoose.connect(process.env.MONGO_URI);
     isConnected = true;
-    console.log('MongoDB Connected Successfully');
+    console.log('MongoDB Connected Successfully to travel_booking_db');
   } catch (err) {
     console.error('MongoDB Connection Error:', err.message);
   }
@@ -62,7 +63,7 @@ app.use('/api/admin', require('./routes/admin'));
 
 // Fallback to SPA for frontend navigation
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(publicPath, 'index.html'));
 });
 
 // Only listen locally, export for Vercel serverless execution

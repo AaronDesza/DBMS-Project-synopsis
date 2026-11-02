@@ -1,12 +1,16 @@
-﻿{
+{
   "name": "travel-tour-booking-system",
   "version": "1.0.0",
   "description": "DBMS Lab Mini Project - Travel/Tour Booking & Exploration System",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "build": "echo 'Build completed successfully'",
     "dev": "nodemon server.js",
     "seed": "node seed.js"
+  },
+  "engines": {
+    "node": ">=18.x"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
