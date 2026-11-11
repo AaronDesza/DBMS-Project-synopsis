@@ -46,7 +46,7 @@ TourQuest implements comprehensive user handling and account management, disting
 
 🌍 Landing Page & Destination Exploration
 The landing page serves as the entry point of TourQuest, featuring a responsive hero banner and a high-resolution photographic collection of 15 world heritage sites. Each destination card displays badges for historical categories and ratings, along with quick actions to view detailed information and reviews.
-<img src="image_c1d65a.jpg" alt="TourQuest homepage header showing the hero section and featured historical destinations grid" width="100%">
+image_c1d65a.jpg
 
 🗺️ Curated Tour Packages
 TourQuest provides hand-picked itineraries complete with historic tours, accommodations, and transport. Users can inspect package durations, base pricing, and included monument sites before proceeding to instant booking and customization.
