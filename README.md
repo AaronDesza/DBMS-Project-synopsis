@@ -111,7 +111,7 @@ The "Registered Users" tab gives administrators full visibility into platform en
 
 ---
 
-## 💡 DBMS Features for Academic Presentation / Viva
+## 💡 DBMS Features for Academic Presentation
 
 - **Live Admin Analytics Dashboard**: Utilizes SQL aggregate functions (COUNT(), SUM(), GROUP BY) to generate real-time metrics for total revenue, active destinations, and registered travellers.
 - **Relational Integrity & Constraints**: Strict enforcement of Primary Key (PK) and Foreign Key (FK) constraints across users, packages, and bookings to prevent orphaned records.
