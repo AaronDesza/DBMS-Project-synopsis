@@ -3,6 +3,20 @@ const router  = express.Router();
 const pool    = require('../backend/db/pool');
 const { verifyToken } = require('../middleware/auth');
 
+const mapReview = (r) => ({
+  _id: String(r.id),
+  id: r.id,
+  rating: r.rating,
+  comment: r.comment,
+  reviewDate: r.review_date,
+  review_date: r.review_date,
+  user: {
+    _id: String(r.user_id),
+    id: r.user_id,
+    name: r.user_name
+  }
+});
+
 // GET /api/reviews/:destinationId – get reviews for a destination
 router.get('/:destinationId', async (req, res) => {
   try {
@@ -15,7 +29,7 @@ router.get('/:destinationId', async (req, res) => {
         ORDER BY r.review_date DESC`,
       [req.params.destinationId]
     );
-    res.json(rows);
+    res.json(rows.map(mapReview));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -24,16 +38,23 @@ router.get('/:destinationId', async (req, res) => {
 // POST /api/reviews – submit a review (auth required)
 router.post('/', verifyToken, async (req, res) => {
   try {
-    const { destinationId, rating, comment } = req.body;
+    const destinationId = req.body.destinationId || req.body.destination_id;
+    const rating = req.body.rating;
+    const comment = req.body.comment;
+
     const { rows } = await pool.query(
       `INSERT INTO reviews (user_id, destination_id, rating, comment)
        VALUES ($1,$2,$3,$4)
        RETURNING id, rating, comment, review_date`,
       [req.user.id, destinationId, rating, comment]
     );
-    // Return with user name
     const userRes = await pool.query('SELECT name FROM users WHERE id = $1', [req.user.id]);
-    res.status(201).json({ ...rows[0], user_id: req.user.id, user_name: userRes.rows[0]?.name });
+    const r = {
+      ...rows[0],
+      user_id: req.user.id,
+      user_name: userRes.rows[0]?.name
+    };
+    res.status(201).json(mapReview(r));
   } catch (err) {
     if (err.code === '23505') {
       return res.status(400).json({ error: 'You have already reviewed this destination.' });

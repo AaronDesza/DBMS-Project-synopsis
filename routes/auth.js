@@ -32,7 +32,16 @@ router.post('/register', async (req, res) => {
     const user = result.rows[0];
 
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
-    res.status(201).json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+    res.status(201).json({
+      token,
+      user: {
+        _id: String(user.id),
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
   } catch (err) {
     console.error('Registration Error:', err);
     res.status(500).json({ error: err.message || 'Registration failed.' });
@@ -58,7 +67,16 @@ router.post('/login', async (req, res) => {
     if (!isMatch) return res.status(400).json({ error: 'Invalid email or password.' });
 
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+    res.json({
+      token,
+      user: {
+        _id: String(user.id),
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
   } catch (err) {
     console.error('Login Error:', err);
     res.status(500).json({ error: err.message || 'Login failed.' });
