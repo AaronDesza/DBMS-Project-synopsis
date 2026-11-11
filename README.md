@@ -1,4 +1,4 @@
-# 🌍 Wanderlust - Travel & Tour Management System (DBMS Project)
+<img width="1024" height="838" alt="image" src="https://github.com/user-attachments/assets/f6a6bc8f-882b-45a1-be49-ab96bac57caf" /><img width="1057" height="857" alt="image" src="https://github.com/user-attachments/assets/023371f6-2f8b-4a02-b87b-71ff123a162f" /># 🌍 TourQuest - Travel & Tour Management System (DBMS Project)
 
 A complete, full-stack Relational Database Management System (DBMS) project designed for academic presentation, synopsis review, and real-world travel exploration.
 
@@ -41,27 +41,24 @@ DBMS/
 │
 └── DBMS-Project-synopsis/    # Project documentation & synopsis
 ```
+👤 User Handling & Role-Based Access Control (RBAC)
+TourQuest implements comprehensive user handling and account management, distinguishing between standard travellers and system admins. The database tracks user registration details, contact numbers, secure authentication credentials, and assigned roles, which are fully viewable and manageable via the administrative directory interface.
+
+🌍 Landing Page & Destination Exploration
+The landing page serves as the entry point of TourQuest, featuring a responsive hero banner and a high-resolution photographic collection of 15 world heritage sites. Each destination card displays badges for historical categories and ratings, along with quick actions to view detailed information and reviews.
+![Uploading image.png…]()
+
+🗺️ Curated Tour Packages
+TourQuest provides hand-picked itineraries complete with historic tours, accommodations, and transport. Users can inspect package durations, base pricing, and included monument sites before proceeding to instant booking and customization.
+
+⚙️ Itinerary Customization & Live Fare Estimation
+The interactive customization engine allows travellers to tailor their trip by choosing specific luxury accommodations (e.g., The Oberoi Amarvilas Heritage), transit modes (such as train and tour coach), and departure dates. The interface computes all-inclusive live fare estimates instantly before checkout.
+
+💳 Secure Payment Gateway
+The secure payment gateway supports multiple transaction methods including UPI/QR code scanning, Credit/Debit cards, and Net Banking. It displays a real-time order summary with itemized pricing, guarantees 256-bit SSL encryption, and includes VPA handle inputs.
 
 ---
 
-## 🚀 How to Run the Project
-
-### 1. Start the Backend API (Port 5000)
-```bash
-cd backend
-npm install
-npm run init-db   # Initializes schema.sql and seeds.sql
-npm start         # Runs at http://localhost:5000
-```
-
-### 2. Start the Frontend Application (Port 5173)
-```bash
-cd frontend
-npm install
-npm run dev       # Runs at http://localhost:5173
-```
-
----
 
 ## 🗄️ Relational Schema Highlights
 
