@@ -43,10 +43,15 @@ DBMS/
 ```
 👤 User Handling & Role-Based Access Control (RBAC)
 TourQuest implements comprehensive user handling and account management, distinguishing between standard travellers and system admins. The database tracks user registration details, contact numbers, secure authentication credentials, and assigned roles, which are fully viewable and manageable via the administrative directory interface.
+<br>
+<img src="image_c1f74b.png" alt="User Handling and Directory Management" width="100%">
+<br>
 
 🌍 Landing Page & Destination Exploration
 The landing page serves as the entry point of TourQuest, featuring a responsive hero banner and a high-resolution photographic collection of 15 world heritage sites. Each destination card displays badges for historical categories and ratings, along with quick actions to view detailed information and reviews.
-![Landing Page Description](image_c1d65a.jpg)
+<br>
+<img src="image_c1d65a.jpg" alt="Landing Page Description" width="100%">
+<br>
 
 🗺️ Curated Tour Packages
 TourQuest provides hand-picked itineraries complete with historic tours, accommodations, and transport. Users can inspect package durations, base pricing, and included monument sites before proceeding to instant booking and customization.
