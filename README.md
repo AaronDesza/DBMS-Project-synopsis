@@ -69,6 +69,8 @@ The secure payment gateway supports multiple transaction methods including UPI/Q
 
 ## 🌍 Full System Overview & Admin Dashboard Integration
 The platform seamlessly integrates the core exploration features with the backend administrative console. Logged-in administrators have a unified view, accessing the high-resolution frontend hero banner alongside a top navigation bar with dedicated admin profile controls. The dashboard features a quick-action "Add New Destination" button allowing for dynamic expansion of the database offerings, and a custom footer displaying the project's academic credentials
+
+
 <img width="620" height="791" alt="Screenshot 2026-11-12 005350" src="https://github.com/user-attachments/assets/334c3810-38f7-41e2-8ca9-16b647ed7c52" />
 
 
