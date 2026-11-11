@@ -15,43 +15,43 @@ DBMS-Project-synopsis/
 │
 ├── 🌐 Frontend (Client-Side & UI)
 │   ├── public/                  
-│   │   ├── css/style.css        # Application stylesheets[cite: 17]
-│   │   ├── images/hampi.png     # Frontend image assets[cite: 17]
-│   │   ├── js/app.js            # Client-side JavaScript[cite: 17]
-│   │   └── index.html           # Main frontend entry page[cite: 17]
-│   └── index.html               # Root fallback/entry HTML file[cite: 18]
+│   │   ├── css/style.css        # Application stylesheets
+│   │   ├── images/hampi.png     # Frontend image assets
+│   │   ├── js/app.js            # Client-side JavaScript
+│   │   └── index.html           # Main frontend entry page
+│   └── index.html               # Root fallback/entry HTML file
 │
 ├── ⚙️ Backend (Server-Side, API & Database)
 │   ├── api/                     
-│   │   └── index.js             # Vercel serverless API entry point[cite: 17]
+│   │   └── index.js             # Vercel serverless API entry point
 │   ├── backend/db/              
-│   │   ├── dedupe.sql           # SQL script for removing duplicates[cite: 17]
-│   │   ├── migration_unique_constraints.sql # Schema migration constraints[cite: 17]
-│   │   ├── pool.js              # PostgreSQL database connection pool[cite: 17]
-│   │   ├── schema.sql           # Database tables and relationships DDL[cite: 17]
-│   │   └── seed.sql             # Dummy data injection for testing[cite: 17]
+│   │   ├── dedupe.sql           # SQL script for removing duplicates
+│   │   ├── migration_unique_constraints.sql # Schema migration constraints
+│   │   ├── pool.js              # PostgreSQL database connection pool
+│   │   ├── schema.sql           # Database tables and relationships DDL
+│   │   └── seed.sql             # Dummy data injection for testing
 │   ├── middleware/              
-│   │   └── auth.js              # RBAC & authentication middleware[cite: 17]
-│   ├── routes/                  # Modular Express.js API endpoints[cite: 18]
-│   │   ├── admin.js, auth.js, bookings.js, destinations.js[cite: 18]
-│   │   └── hotels.js, packages.js, payments.js, reviews.js, transport.js[cite: 18]
-│   ├── app.js                   # Core Express application logic[cite: 18]
-│   ├── server.js                # Main Node.js server listener[cite: 18]
-│   └── travel_booking_db.sql    # Raw SQL dump for DB recreation[cite: 18]
+│   │   └── auth.js              # RBAC & authentication middleware
+│   ├── routes/                  # Modular Express.js API endpoints
+│   │   ├── admin.js, auth.js, bookings.js, destinations.js
+│   │   └── hotels.js, packages.js, payments.js, reviews.js, transport.js
+│   ├── app.js                   # Core Express application logic
+│   ├── server.js                # Main Node.js server listener
+│   └── travel_booking_db.sql    # Raw SQL dump for DB recreation
 │
 ├── 🛠️ Tools, Scripts & Configuration
-│   ├── scripts/                 # Additional backend utility scripts[cite: 18]
+│   ├── scripts/                 # Additional backend utility scripts
 │   ├── .github/workflows/       
-│   │   └── deploy.yml           # GitHub Actions CI/CD pipeline[cite: 17]
+│   │   └── deploy.yml           # GitHub Actions CI/CD pipeline
 │   ├── .vscode/                 
-│   │   └── settings.json        # Workspace specific editor settings[cite: 17]
-│   ├── .env.example             # Template for secure environment variables[cite: 18]
-│   ├── .gitignore               # Version control exclusion list[cite: 18]
-│   ├── package.json             # NPM project metadata and dependencies[cite: 18]
-│   ├── package-lock.json        # Locked dependency tree for stability[cite: 18]
-│   └── vercel.json              # Vercel deployment and routing rules[cite: 18]
+│   │   └── settings.json        # Workspace specific editor settings
+│   ├── .env.example             # Template for secure environment variable
+│   ├── .gitignore               # Version control exclusion list
+│   ├── package.json             # NPM project metadata and dependencies
+│   ├── package-lock.json        # Locked dependency tree for stability
+│   └── vercel.json              # Vercel deployment and routing rules
 │
-└── 📄 README.md                 # Main project documentation[cite: 18]
+└── 📄 README.md                 # Main project documentation
 ```
 ## 👤 User Handling & Role-Based Access Control (RBAC)
 TourQuest implements comprehensive user handling and account management, distinguishing between standard travellers and system admins. The database tracks user registration details, contact numbers, secure authentication credentials, and assigned roles, which are fully viewable and manageable via the administrative directory interface.
