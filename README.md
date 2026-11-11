@@ -11,39 +11,32 @@ A complete, full-stack Relational Database Management System (DBMS) project desi
 ## 📁 Project Structure
 
 ```text
-DBMS/
-├── backend/                  # Express.js REST API & Relational Database Layer
-│   ├── src/
-│   │   ├── config/database.js# SQLite connection & PRAGMA configuration
-│   │   ├── controllers/      # Business logic & SQL query execution
-│   │   ├── routes/           # API Endpoints (/tours, /bookings, /reviews, /dbms)
-│   │   ├── db/
-│   │   │   ├── schema.sql    # DDL: Tables, constraints, foreign keys, views & indexes
-│   │   │   ├── seeds.sql     # DML: Realistic seed records (tours, bookings, guides, reviews)
-│   │   │   └── initDb.js     # Automatic database migration and seeding
-│   │   └── server.js         # Express server entry point
-│   ├── database.sqlite       # Relational SQLite database file
-│   └── package.json
+DBMS-Project-synopsis/
 │
-├── frontend/                 # React (Vite) UI & Interactive DBMS Console
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Navbar.jsx           # Tab routing with badge counters
-│   │   │   ├── HeroBanner.jsx       # Interactive search & category filter pills
-│   │   │   ├── TourCard.jsx         # Card preview with ratings & pricing
-│   │   │   ├── TourDetailModal.jsx  # Itinerary viewer, guides & live review posting
-│   │   │   ├── BookingModal.jsx     # Transactional booking flow
-│   │   │   ├── MyBookings.jsx       # Reservations dashboard & cancellation
-│   │   │   ├── DbmsExplorer.jsx     # Relational table browser & Live SQL playground
-│   │   │   ├── AnalyticsView.jsx    # Real-time SQL aggregations & metrics
-│   │   │   └── ArchitectureView.jsx # ER diagrams, 3NF normalization docs
-│   │   ├── index.css                # Polished design system (Glassmorphism & dark accents)
-│   │   ├── App.jsx                  # State coordinator
-│   │   └── main.jsx
-│   ├── package.json
-│   └── vite.config.js
+├── 🌐 Frontend (Client-Side & UI)
+│   ├── public/                  # Frontend static assets (CSS, client-side JS, images)[cite: 15]
+│   └── index.html               # Main frontend entry page / HTML structure[cite: 15]
 │
-└── DBMS-Project-synopsis/    # Project documentation & synopsis
+├── ⚙️ Backend (Server-Side, API & Database)
+│   ├── api/                     # Serverless API endpoints for Vercel deployment[cite: 15]
+│   ├── backend/db/              # Database scripts, schemas, and unique constraints[cite: 15]
+│   ├── middleware/              # Custom backend middleware for routing and authentication[cite: 15]
+│   ├── routes/                  # Express.js routes handling PostgreSQL JSON responses[cite: 15]
+│   ├── app.js                   # Core application logic and Express configuration[cite: 15]
+│   ├── server.js                # Main Node.js server entry point[cite: 15]
+│   └── travel_booking_db.sql    # Raw SQL dump for PostgreSQL database recreation[cite: 15]
+│
+├── 🛠️ Tools, Scripts & Configuration
+│   ├── scripts/                 # Utility scripts (e.g., database dedupe and migration)[cite: 15]
+│   ├── .github/workflows/       # GitHub Actions for CI/CD and deployment[cite: 15]
+│   ├── .vscode/                 # IDE workspace settings and file watcher exclusions[cite: 15]
+│   ├── .env.example             # Template for secure environment variables (Neon DB URIs)[cite: 15]
+│   ├── .gitignore               # Ignored files for version control[cite: 15]
+│   ├── package.json             # Project metadata and npm dependencies[cite: 15]
+│   ├── package-lock.json        # Locked dependency versions for consistent installs[cite: 15]
+│   └── vercel.json              # Vercel hosting, clean routing, and legacy file exclusions[cite: 15]
+│
+└── 📄 README.md                 # Main project documentation[cite: 15]
 ```
 ## 👤 User Handling & Role-Based Access Control (RBAC)
 TourQuest implements comprehensive user handling and account management, distinguishing between standard travellers and system admins. The database tracks user registration details, contact numbers, secure authentication credentials, and assigned roles, which are fully viewable and manageable via the administrative directory interface.
