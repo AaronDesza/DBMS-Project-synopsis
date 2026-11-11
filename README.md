@@ -12,7 +12,6 @@ A complete, full-stack Relational Database Management System (DBMS) project desi
 
 ```text
 DBMS-Project-synopsis/
-DBMS-Project-synopsis/
 │
 ├── 🌐 Frontend (Client-Side & UI)
 │   ├── public/                  
