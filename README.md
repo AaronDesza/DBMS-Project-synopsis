@@ -56,6 +56,8 @@ TourQuest provides hand-picked itineraries complete with historic tours, accommo
 
 ## ⚙️ Itinerary Customization & Live Fare Estimation
 The interactive customization engine allows travellers to tailor their trip by choosing specific luxury accommodations (e.g., The Oberoi Amarvilas Heritage), transit modes (such as train and tour coach), and departure dates. The interface computes all-inclusive live fare estimates instantly before checkout.
+
+
 <img width="747" height="605" alt="Screenshot 2026-11-12 003305" src="https://github.com/user-attachments/assets/842680ef-4df2-497e-aad6-56267e0c9bc4" />
 
 ## 💳 Secure Payment Gateway
