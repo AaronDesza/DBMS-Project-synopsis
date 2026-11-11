@@ -3,7 +3,7 @@
 A complete, full-stack Relational Database Management System (DBMS) project designed for academic presentation, synopsis review, and real-world travel exploration.
 
 
-<img width="1024" height="339" alt="image" src="https://github.com/user-attachments/assets/ff0c245b-b697-4eec-a4be-55dfde28c57a" />
+<img width="3584" height="967" alt="Gemini_Generated_Image_kgbewekgbewekgbe" src="https://github.com/user-attachments/assets/bb14f259-f35f-4753-8d8b-85032359badb" />
 
 
 ---
