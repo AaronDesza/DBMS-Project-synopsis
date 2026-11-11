@@ -80,27 +80,25 @@ The "All Bookings" interface acts as the financial and operational heart of the 
 The "Registered Users" tab gives administrators full visibility into platform engagement and strict data separation. The user grid extracts real-time database records, displaying each member's full name, email address, contact number, and exact joining date. To ensure robust access control, the interface uses distinct visual role badges to instantly differentiate standard 'traveller' accounts from privileged 'admin' accounts, demonstrating a secure and clear implementation of RBAC.
 <img width="1210" height="528" alt="Screenshot 2026-11-12 005500" src="https://github.com/user-attachments/assets/f45863ea-701d-4780-aa9f-c1d8b5ee9787" />
 
----
 
 ---
 
 
 ## 🗄️ Relational Schema Highlights
 
-1. **`users`**: Travelers, guides, and system administrators.
-2. **`destinations`**: Countries, regions, climate info, and travel seasons.
-3. **`tours`**: Tour packages with prices, duration, difficulty, and ratings.
-4. **`itinerary_items`**: Daily itinerary linked to tours (`1:N` cascade relationship).
-5. **`guides` & `tour_guides`**: Multi-lingual guides linked to tours via `M:N` junction table.
-6. **`bookings` & `payments`**: ACID transactional booking records with reference IDs.
-7. **`reviews`**: Ratings and user comments with automated average recalculation.
+1. **`users`**: Manages registered standard travellers and system administrators with secure authentication credentials (RBAC)
+2. **`destinations`**: Stores details for 15 world historical heritage sites, including geographic locations, monument descriptions, and high-resolution image references
+3. **`tours`**: Curated itineraries (e.g., Golden Triangle & Taj Royal Explorer) detailing base pricing, package duration, and linked historical sites.
+4. **`hotels`**: Accommodation database featuring luxury stays with dynamic per-night pricing tiers.
+5. **`transport`**: Transit mode registry (e.g., trains, tour coaches) with integrated fare calculations.
+6. **`bookings` & `payments`**: ACID transactional records linking users to customized packages, tracking real-time status (confirmed, pending, cancelled), total amounts, and payment timestamps.
 
 ---
 
 ## 💡 DBMS Features for Academic Presentation / Viva
 
-- **Interactive SQL Playground**: Execute custom queries (`SELECT`, `JOIN`, `GROUP BY`, `HAVING`) directly within the browser with live millisecond timing.
-- **Relational Table Inspector**: View raw records and column definitions for all 8 tables and views.
-- **Database Normalization**: Structured up to 3NF/BCNF with zero data redundancy.
-- **Cross-Database Compatibility**: Compatible with SQLite, MySQL, and PostgreSQL.
+- **Live Admin Analytics Dashboard**: Utilizes SQL aggregate functions (COUNT(), SUM(), GROUP BY) to generate real-time metrics for total revenue, active destinations, and registered travellers.
+- **Relational Integrity & Constraints**: Strict enforcement of Primary Key (PK) and Foreign Key (FK) constraints across users, packages, and bookings to prevent orphaned records.
+- **Database Normalization**: Structured up to 3NF to eliminate data redundancy across destination details, pricing computations, and user profiles.
+- **Cloud-Native Deployment**:robust backend hosted on Neon PostgreSQL, ensuring high availability, atomic transaction handling during checkout, and seamless API integration.
 
