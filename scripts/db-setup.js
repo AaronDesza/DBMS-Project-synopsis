@@ -1,6 +1,6 @@
 // scripts/db-setup.js
-// Run schema.sql then seed.sql against DATABASE_URL.
-// Safe to re-run: schema uses IF NOT EXISTS, seed uses ON CONFLICT DO NOTHING.
+// Safe to re-run: schema uses IF NOT EXISTS, migration adds unique constraints, seed uses ON CONFLICT DO NOTHING.
+// Never overwrites existing user passwords, bookings, or creates duplicate seed rows.
 
 require('dotenv').config();
 const { Pool } = require('pg');
@@ -19,14 +19,28 @@ const pool = new Pool({
 });
 
 async function run() {
-  const schema = fs.readFileSync(path.join(__dirname, '../backend/db/schema.sql'), 'utf8');
-  const seed   = fs.readFileSync(path.join(__dirname, '../backend/db/seed.sql'),   'utf8');
+  const schemaPath    = path.join(__dirname, '../backend/db/schema.sql');
+  const migrationPath = path.join(__dirname, '../backend/db/migration_unique_constraints.sql');
+  const seedPath      = path.join(__dirname, '../backend/db/seed.sql');
 
-  console.log('⟳  Running schema.sql …');
+  console.log('⟳  Applying schema.sql …');
+  const schema = fs.readFileSync(schemaPath, 'utf8');
   await pool.query(schema);
   console.log('✔  schema.sql applied.');
 
-  console.log('⟳  Running seed.sql …');
+  if (fs.existsSync(migrationPath)) {
+    console.log('⟳  Applying migration_unique_constraints.sql …');
+    try {
+      const migration = fs.readFileSync(migrationPath, 'utf8');
+      await pool.query(migration);
+      console.log('✔  migration_unique_constraints.sql applied.');
+    } catch (migErr) {
+      console.warn('⚠  Migration notice (run backend/db/dedupe.sql first if duplicates exist):', migErr.message);
+    }
+  }
+
+  console.log('⟳  Applying seed.sql (ON CONFLICT DO NOTHING) …');
+  const seed = fs.readFileSync(seedPath, 'utf8');
   await pool.query(seed);
   console.log('✔  seed.sql applied.');
 
@@ -41,4 +55,3 @@ run().catch(err => {
   pool.end();
   process.exit(1);
 });
-

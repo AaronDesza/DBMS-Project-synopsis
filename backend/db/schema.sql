@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS destinations (
     id            SERIAL PRIMARY KEY,
     created_by    INT           REFERENCES users(id) ON DELETE SET NULL,
-    name          VARCHAR(150)  NOT NULL,
+    name          VARCHAR(150)  NOT NULL UNIQUE,
     location      VARCHAR(200)  NOT NULL,
     category      VARCHAR(100)  NOT NULL,
     description   TEXT          NOT NULL DEFAULT '',
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS destinations (
 CREATE TABLE IF NOT EXISTS tour_packages (
     id              SERIAL PRIMARY KEY,
     created_by      INT           REFERENCES users(id) ON DELETE SET NULL,
-    package_name    VARCHAR(200)  NOT NULL,
+    package_name    VARCHAR(200)  NOT NULL UNIQUE,
     duration_days   INT           NOT NULL CHECK (duration_days > 0),
     price           NUMERIC(10,2) NOT NULL CHECK (price >= 0),
     destination_id  INT           REFERENCES destinations(id) ON DELETE SET NULL,
@@ -41,9 +41,11 @@ CREATE TABLE IF NOT EXISTS tour_packages (
 -- Hotels
 CREATE TABLE IF NOT EXISTS hotels (
     id              SERIAL PRIMARY KEY,
-    hotel_name      VARCHAR(200)  NOT NULL,
+    hotel_name      VARCHAR(200)  NOT NULL UNIQUE,
     price_per_night NUMERIC(10,2) NOT NULL CHECK (price_per_night >= 0),
-    rating          NUMERIC(2,1)  NOT NULL CHECK (rating BETWEEN 0 AND 5)
+    rating          NUMERIC(2,1)  NOT NULL CHECK (rating BETWEEN 0 AND 5),
+    destination_id  INT           REFERENCES destinations(id) ON DELETE SET NULL,
+    CONSTRAINT uq_hotels_name_destination UNIQUE (hotel_name, destination_id)
 );
 
 -- Transport
@@ -52,7 +54,8 @@ CREATE TABLE IF NOT EXISTS transport (
     type            VARCHAR(20)   NOT NULL
                       CHECK (type IN ('Flight','Train','Bus','Cab')),
     operator_name   VARCHAR(200)  NOT NULL,
-    price           NUMERIC(10,2) NOT NULL CHECK (price >= 0)
+    price           NUMERIC(10,2) NOT NULL CHECK (price >= 0),
+    CONSTRAINT uq_transport_type_operator UNIQUE (type, operator_name)
 );
 
 -- Bookings
@@ -93,4 +96,3 @@ CREATE TABLE IF NOT EXISTS reviews (
     review_date     TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
     UNIQUE (user_id, destination_id)
 );
-

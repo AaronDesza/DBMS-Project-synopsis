@@ -1,9 +1,7 @@
 -- =============================================================
 -- TourQuest – PostgreSQL Seed Data
--- Safe to re-run: uses INSERT … ON CONFLICT
--- Bcrypt hashes (cost 10 generated with bcryptjs):
---   admin123  → $2a$10$YWV7Dd513.nPGYcwUDylDeGqovX4Em1DOmGKq/WqQNCyQPQyRfdwy
---   user123   → $2a$10$U0yp458dQMdLn20PjSZlVOJwAqbZ86eGWJZqY.oj00BYx0dJJgFru
+-- Safe to re-run: uses INSERT … ON CONFLICT DO NOTHING
+-- Will never overwrite user passwords, existing bookings, or create duplicates
 -- =============================================================
 
 -- ── Seed users ────────────────────────────────────────────────
@@ -18,7 +16,7 @@ INSERT INTO users (name, email, password, phone, role) VALUES
    '$2a$10$U0yp458dQMdLn20PjSZlVOJwAqbZ86eGWJZqY.oj00BYx0dJJgFru',
    '9876543210',
    'traveller')
-ON CONFLICT (email) DO UPDATE SET password = EXCLUDED.password, role = EXCLUDED.role;
+ON CONFLICT (email) DO NOTHING;
 
 -- ── Destinations (created_by = admin user id=1) ───────────────
 INSERT INTO destinations (created_by, name, location, category, description, image_url) VALUES
@@ -46,7 +44,7 @@ INSERT INTO destinations (created_by, name, location, category, description, ima
    'Heritage',
    '15th-century Inca citadel set high in the Andes Mountains, a wonder of pre-Columbian engineering.',
    'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=80')
-ON CONFLICT DO NOTHING;
+ON CONFLICT (name) DO NOTHING;
 
 -- ── Tour packages ─────────────────────────────────────────────
 INSERT INTO tour_packages (created_by, package_name, duration_days, price, destination_id) VALUES
@@ -54,15 +52,15 @@ INSERT INTO tour_packages (created_by, package_name, duration_days, price, desti
   (1, 'Vijayanagara Heritage Trail (Hampi)',     3,  12000.00, 2),
   (1, 'Roman Empire Heritage Expedition',        6,  85000.00, 3),
   (1, 'Inca Trail & Sacred Valley Tour',         7, 110000.00, 4)
-ON CONFLICT DO NOTHING;
+ON CONFLICT (package_name) DO NOTHING;
 
 -- ── Hotels ───────────────────────────────────────────────────
-INSERT INTO hotels (hotel_name, price_per_night, rating) VALUES
-  ('The Oberoi Amarvilas Heritage',  6500.00, 4.9),
-  ('Evolve Back Kamalapura Palace',  4800.00, 4.6),
-  ('Hotel Artemide Roma',            9200.00, 4.7),
-  ('Sanctuary Lodge Cusco',         11000.00, 4.8)
-ON CONFLICT DO NOTHING;
+INSERT INTO hotels (hotel_name, price_per_night, rating, destination_id) VALUES
+  ('The Oberoi Amarvilas Heritage',  6500.00, 4.9, 1),
+  ('Evolve Back Kamalapura Palace',  4800.00, 4.6, 2),
+  ('Hotel Artemide Roma',            9200.00, 4.7, 3),
+  ('Sanctuary Lodge Cusco',         11000.00, 4.8, 4)
+ON CONFLICT (hotel_name) DO NOTHING;
 
 -- ── Transport ────────────────────────────────────────────────
 INSERT INTO transport (type, operator_name, price) VALUES
@@ -70,5 +68,4 @@ INSERT INTO transport (type, operator_name, price) VALUES
   ('Train',  'Vande Bharat / Eurail First Class',  3200.00),
   ('Bus',    'Volvo Multi-Axle Sleeper',            1800.00),
   ('Cab',    'Private Chauffeur SUV',               4500.00)
-ON CONFLICT DO NOTHING;
-
+ON CONFLICT (type, operator_name) DO NOTHING;
