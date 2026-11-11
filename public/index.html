@@ -107,7 +107,12 @@
             </div>
             <div class="mb-3">
               <label class="form-label fw-semibold small">Password</label>
-              <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" />
+              <div class="password-wrapper position-relative">
+                <input type="password" class="form-control pe-5" id="loginPassword" placeholder="••••••••" />
+                <button type="button" class="btn btn-password-toggle position-absolute end-0 top-50 translate-middle-y border-0 bg-transparent text-secondary" onclick="togglePasswordVisibility('loginPassword', this)" aria-label="Show password">
+                  <i class="bi bi-eye" aria-hidden="true"></i>
+                </button>
+              </div>
             </div>
             <button class="btn btn-warning w-100 fw-bold py-2 mt-2" onclick="doLogin()"><i class="bi bi-box-arrow-in-right me-2"></i>Sign In</button>
             <div class="p-3 bg-light rounded-3 mt-4 text-center small text-muted border">
@@ -124,7 +129,15 @@
             <div class="mb-3"><label class="form-label fw-semibold small">Full Name</label><input type="text" class="form-control" id="regName" placeholder="Aaron De Souza" /></div>
             <div class="mb-3"><label class="form-label fw-semibold small">Email Address</label><input type="email" class="form-control" id="regEmail" placeholder="aaron@example.com" /></div>
             <div class="mb-3"><label class="form-label fw-semibold small">Phone Number</label><input type="text" class="form-control" id="regPhone" placeholder="9876543210" /></div>
-            <div class="mb-3"><label class="form-label fw-semibold small">Password</label><input type="password" class="form-control" id="regPassword" placeholder="Minimum 6 characters" /></div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Password</label>
+              <div class="password-wrapper position-relative">
+                <input type="password" class="form-control pe-5" id="regPassword" placeholder="Minimum 6 characters" />
+                <button type="button" class="btn btn-password-toggle position-absolute end-0 top-50 translate-middle-y border-0 bg-transparent text-secondary" onclick="togglePasswordVisibility('regPassword', this)" aria-label="Show password">
+                  <i class="bi bi-eye" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
             <button class="btn btn-warning w-100 fw-bold py-2 mt-2" onclick="doRegister()"><i class="bi bi-person-plus me-2"></i>Register Now</button>
           </div>
         </div>

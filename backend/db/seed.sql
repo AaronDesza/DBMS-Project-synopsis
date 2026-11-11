@@ -1,24 +1,24 @@
 -- =============================================================
 -- TourQuest – PostgreSQL Seed Data
--- Safe to re-run: uses INSERT … ON CONFLICT DO NOTHING
--- Bcrypt hashes (cost 10):
---   admin123  → $2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi
---   user123   → $2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LpMSBtxUq6u
+-- Safe to re-run: uses INSERT … ON CONFLICT
+-- Bcrypt hashes (cost 10 generated with bcryptjs):
+--   admin123  → $2a$10$YWV7Dd513.nPGYcwUDylDeGqovX4Em1DOmGKq/WqQNCyQPQyRfdwy
+--   user123   → $2a$10$U0yp458dQMdLn20PjSZlVOJwAqbZ86eGWJZqY.oj00BYx0dJJgFru
 -- =============================================================
 
 -- ── Seed users ────────────────────────────────────────────────
 INSERT INTO users (name, email, password, phone, role) VALUES
   ('Admin',
    'admin@tourbooking.com',
-   '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+   '$2a$10$YWV7Dd513.nPGYcwUDylDeGqovX4Em1DOmGKq/WqQNCyQPQyRfdwy',
    '0000000000',
    'admin'),
   ('Demo Traveller',
    'traveller@tourbooking.com',
-   '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LpMSBtxUq6u',
+   '$2a$10$U0yp458dQMdLn20PjSZlVOJwAqbZ86eGWJZqY.oj00BYx0dJJgFru',
    '9876543210',
    'traveller')
-ON CONFLICT (email) DO NOTHING;
+ON CONFLICT (email) DO UPDATE SET password = EXCLUDED.password, role = EXCLUDED.role;
 
 -- ── Destinations (created_by = admin user id=1) ───────────────
 INSERT INTO destinations (created_by, name, location, category, description, image_url) VALUES

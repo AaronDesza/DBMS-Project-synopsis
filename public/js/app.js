@@ -72,8 +72,29 @@ function showSection(name) {
 }
 
 /* ======================================================
-   AUTHENTICATION
+   AUTHENTICATION & PASSWORD TOGGLE
 ====================================================== */
+function togglePasswordVisibility(inputId, btnEl) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  const icon = btnEl.querySelector('i');
+  if (input.type === 'password') {
+    input.type = 'text';
+    btnEl.setAttribute('aria-label', 'Hide password');
+    if (icon) {
+      icon.classList.remove('bi-eye');
+      icon.classList.add('bi-eye-slash');
+    }
+  } else {
+    input.type = 'password';
+    btnEl.setAttribute('aria-label', 'Show password');
+    if (icon) {
+      icon.classList.remove('bi-eye-slash');
+      icon.classList.add('bi-eye');
+    }
+  }
+}
+
 function switchAuthTab(tab) {
   document.getElementById('loginForm').classList.toggle('d-none', tab !== 'login');
   document.getElementById('registerForm').classList.toggle('d-none', tab !== 'register');

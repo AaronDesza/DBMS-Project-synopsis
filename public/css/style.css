@@ -506,3 +506,25 @@ body {
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: #f1f1f1; }
 ::-webkit-scrollbar-thumb { background: var(--primary-gold); border-radius: 4px; }
+
+/* Password Visibility Toggle */
+.password-wrapper {
+  position: relative;
+}
+.password-wrapper .form-control {
+  padding-right: 2.75rem !important;
+}
+.btn-password-toggle {
+  padding: 0.375rem 0.75rem;
+  color: #6c757d;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  line-height: 1;
+  font-size: 1.1rem;
+}
+.btn-password-toggle:hover,
+.btn-password-toggle:focus {
+  color: var(--primary-gold, #c59d5f) !important;
+  outline: none;
+  box-shadow: none;
+}
