@@ -1,98 +1,101 @@
 const express = require('express');
-const router = express.Router();
-const Payment = require('../models/Payment');
-const Booking = require('../models/Booking');
+const router  = express.Router();
+const pool    = require('../backend/db/pool');
 const { verifyToken } = require('../middleware/auth');
 
-// POST /api/payments - create payment for booking
+// Helper: fetch a fully-populated payment row
+async function getPaymentRow(id) {
+  const { rows } = await pool.query(
+    `SELECT py.*,
+            b.user_id, b.travel_date, b.status AS booking_status,
+            b.pkg_price, b.hotel_total, b.transport_price, b.total_amount,
+            u.name  AS user_name,  u.email AS user_email, u.phone AS user_phone,
+            p.package_name, p.duration_days,
+            h.hotel_name,   h.price_per_night,
+            t.type  AS transport_type, t.operator_name
+       FROM payments py
+       JOIN bookings      b ON b.id  = py.booking_id
+       JOIN users         u ON u.id  = b.user_id
+       JOIN tour_packages p ON p.id  = b.package_id
+       JOIN hotels        h ON h.id  = b.hotel_id
+       JOIN transport     t ON t.id  = b.transport_id
+      WHERE py.id = $1`,
+    [id]
+  );
+  return rows[0] || null;
+}
+
+// POST /api/payments – pay for a booking
 router.post('/', verifyToken, async (req, res) => {
   try {
-    const { bookingId, paymentMode, paymentDetails } = req.body;
+    const { bookingId, paymentMode } = req.body;
 
-    const booking = await Booking.findById(bookingId);
+    const bookRes = await pool.query('SELECT * FROM bookings WHERE id = $1', [bookingId]);
+    const booking = bookRes.rows[0];
     if (!booking) return res.status(404).json({ error: 'Booking not found.' });
-    if (booking.user.toString() !== req.user.id && req.user.role !== 'admin')
+    if (booking.user_id !== req.user.id && req.user.role !== 'admin') {
       return res.status(403).json({ error: 'Access denied.' });
+    }
 
-    const existingPayment = await Payment.findOne({ booking: bookingId });
-    if (existingPayment) {
-      const populatedExisting = await Payment.findById(existingPayment._id)
-        .populate({
-          path: 'booking',
-          populate: [
-            { path: 'package' },
-            { path: 'hotel' },
-            { path: 'transport' },
-            { path: 'user', select: 'name email phone' }
-          ]
-        });
-      return res.status(200).json({ payment: populatedExisting, message: 'Booking already paid.' });
+    // Return existing payment if already paid
+    const existRes = await pool.query('SELECT id FROM payments WHERE booking_id = $1', [bookingId]);
+    if (existRes.rows.length) {
+      const payment = await getPaymentRow(existRes.rows[0].id);
+      return res.status(200).json({ payment, message: 'Booking already paid.' });
     }
 
     const receiptNo = 'TRB-' + Date.now() + '-' + Math.floor(1000 + Math.random() * 9000);
 
-    const payment = await Payment.create({
-      booking: bookingId,
-      amount: booking.totalAmount,
-      paymentMode: paymentMode || 'Credit Card',
-      receiptNo
-    });
+    const { rows } = await pool.query(
+      `INSERT INTO payments (booking_id, amount, payment_mode, receipt_no)
+       VALUES ($1,$2,$3,$4) RETURNING id`,
+      [bookingId, booking.total_amount, paymentMode || 'Credit Card', receiptNo]
+    );
 
-    booking.status = 'confirmed';
-    await booking.save();
+    // Confirm the booking
+    await pool.query("UPDATE bookings SET status = 'confirmed' WHERE id = $1", [bookingId]);
 
-    const populatedPayment = await Payment.findById(payment._id)
-      .populate({
-        path: 'booking',
-        populate: [
-          { path: 'package' },
-          { path: 'hotel' },
-          { path: 'transport' },
-          { path: 'user', select: 'name email phone' }
-        ]
-      });
-
-    res.status(201).json({ payment: populatedPayment, message: 'Payment successful! Booking confirmed.' });
+    const payment = await getPaymentRow(rows[0].id);
+    res.status(201).json({ payment, message: 'Payment successful! Booking confirmed.' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// GET /api/payments/my - get user's payment receipts
+// GET /api/payments/my – get user's payment receipts
 router.get('/my', verifyToken, async (req, res) => {
   try {
-    const bookings = await Booking.find({ user: req.user.id }).select('_id');
-    const bookingIds = bookings.map(b => b._id);
-    const payments = await Payment.find({ booking: { $in: bookingIds } })
-      .populate({
-        path: 'booking',
-        populate: [
-          { path: 'package', select: 'packageName durationDays price' },
-          { path: 'hotel', select: 'hotelName pricePerNight' },
-          { path: 'transport', select: 'type operatorName' }
-        ]
-      })
-      .sort({ createdAt: -1 });
-    res.json(payments);
+    const { rows } = await pool.query(
+      `SELECT py.*,
+              b.travel_date, b.status AS booking_status,
+              b.pkg_price, b.hotel_total, b.transport_price, b.total_amount,
+              p.package_name, p.duration_days,
+              h.hotel_name,   h.price_per_night,
+              t.type AS transport_type, t.operator_name
+         FROM payments py
+         JOIN bookings      b ON b.id = py.booking_id
+         JOIN tour_packages p ON p.id = b.package_id
+         JOIN hotels        h ON h.id = b.hotel_id
+         JOIN transport     t ON t.id = b.transport_id
+        WHERE b.user_id = $1
+        ORDER BY py.payment_date DESC`,
+      [req.user.id]
+    );
+    res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// GET /api/payments/:id - get single payment receipt
+// GET /api/payments/:id – get single payment receipt
 router.get('/:id', verifyToken, async (req, res) => {
   try {
-    const payment = await Payment.findById(req.params.id)
-      .populate({
-        path: 'booking',
-        populate: [
-          { path: 'package' },
-          { path: 'hotel' },
-          { path: 'transport' },
-          { path: 'user', select: 'name email phone' }
-        ]
-      });
+    const payment = await getPaymentRow(req.params.id);
     if (!payment) return res.status(404).json({ error: 'Payment not found.' });
+    // Only owner or admin can read
+    if (payment.user_id !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Access denied.' });
+    }
     res.json(payment);
   } catch (err) {
     res.status(500).json({ error: err.message });

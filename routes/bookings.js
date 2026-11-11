@@ -1,89 +1,121 @@
-﻿const express = require('express');
-const router = express.Router();
-const Booking = require('../models/Booking');
-const TourPackage = require('../models/TourPackage');
-const Hotel = require('../models/Hotel');
-const Transport = require('../models/Transport');
+const express = require('express');
+const router  = express.Router();
+const pool    = require('../backend/db/pool');
 const { verifyToken } = require('../middleware/auth');
 
-// POST /api/bookings - create booking (auth required)
+// Helper: fetch a fully-joined booking row
+async function getBookingRow(id) {
+  const { rows } = await pool.query(
+    `SELECT b.*,
+            u.name  AS user_name,  u.email AS user_email, u.phone AS user_phone,
+            p.package_name, p.duration_days, p.price AS pkg_list_price,
+            h.hotel_name,   h.price_per_night, h.rating AS hotel_rating,
+            t.type  AS transport_type, t.operator_name, t.price AS transport_list_price,
+            d.name  AS destination_name
+       FROM bookings b
+       JOIN users        u ON u.id = b.user_id
+       JOIN tour_packages p ON p.id = b.package_id
+       JOIN hotels       h ON h.id = b.hotel_id
+       JOIN transport    t ON t.id = b.transport_id
+       LEFT JOIN destinations d ON d.id = p.destination_id
+      WHERE b.id = $1`,
+    [id]
+  );
+  return rows[0] || null;
+}
+
+// POST /api/bookings – create booking (auth required)
 router.post('/', verifyToken, async (req, res) => {
   try {
     const { packageId, hotelId, transportId, travelDate } = req.body;
 
-    const [pkg, hotel, transport] = await Promise.all([
-      TourPackage.findById(packageId),
-      Hotel.findById(hotelId),
-      Transport.findById(transportId)
+    const [pkgRes, hotelRes, transRes] = await Promise.all([
+      pool.query('SELECT id, price, duration_days FROM tour_packages WHERE id = $1', [packageId]),
+      pool.query('SELECT id, price_per_night FROM hotels WHERE id = $1', [hotelId]),
+      pool.query('SELECT id, price FROM transport WHERE id = $1', [transportId])
     ]);
 
-    if (!pkg || !hotel || !transport) return res.status(404).json({ error: 'Invalid booking references.' });
+    const pkg       = pkgRes.rows[0];
+    const hotel     = hotelRes.rows[0];
+    const transport = transRes.rows[0];
+    if (!pkg || !hotel || !transport) {
+      return res.status(404).json({ error: 'Invalid booking references.' });
+    }
 
-    const hotelTotal = hotel.pricePerNight * pkg.durationDays;
-    const totalAmount = pkg.price + hotelTotal + transport.price;
+    const pkgPrice       = parseFloat(pkg.price);
+    const hotelTotal     = parseFloat(hotel.price_per_night) * pkg.duration_days;
+    const transportPrice = parseFloat(transport.price);
+    const totalAmount    = pkgPrice + hotelTotal + transportPrice;
 
-    const booking = await Booking.create({
-      user: req.user.id,
-      package: packageId,
-      hotel: hotelId,
-      transport: transportId,
-      travelDate,
-      priceBreakdown: {
-        packagePrice: pkg.price,
-        hotelTotal,
-        transportPrice: transport.price
-      },
-      totalAmount,
-      status: 'pending'
-    });
+    const { rows } = await pool.query(
+      `INSERT INTO bookings
+         (user_id, package_id, hotel_id, transport_id, travel_date,
+          pkg_price, hotel_total, transport_price, total_amount, status)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,'pending')
+       RETURNING id`,
+      [req.user.id, packageId, hotelId, transportId, travelDate,
+       pkgPrice, hotelTotal, transportPrice, totalAmount]
+    );
 
+    const booking = await getBookingRow(rows[0].id);
     res.status(201).json(booking);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// GET /api/bookings/my - get user's bookings
+// GET /api/bookings/my – get user's own bookings
 router.get('/my', verifyToken, async (req, res) => {
   try {
-    const bookings = await Booking.find({ user: req.user.id })
-      .populate('package', 'packageName durationDays price')
-      .populate('hotel', 'hotelName pricePerNight rating')
-      .populate('transport', 'type operatorName price')
-      .sort({ createdAt: -1 });
-    res.json(bookings);
+    const { rows } = await pool.query(
+      `SELECT b.*,
+              p.package_name, p.duration_days,
+              h.hotel_name,   h.price_per_night,
+              t.type AS transport_type, t.operator_name,
+              d.name AS destination_name
+         FROM bookings b
+         JOIN tour_packages p ON p.id = b.package_id
+         JOIN hotels        h ON h.id = b.hotel_id
+         JOIN transport     t ON t.id = b.transport_id
+         LEFT JOIN destinations d ON d.id = p.destination_id
+        WHERE b.user_id = $1
+        ORDER BY b.booking_date DESC`,
+      [req.user.id]
+    );
+    res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// GET /api/bookings/:id - get single booking
+// GET /api/bookings/:id – get single booking
 router.get('/:id', verifyToken, async (req, res) => {
   try {
-    const booking = await Booking.findById(req.params.id)
-      .populate('package')
-      .populate('hotel')
-      .populate('transport')
-      .populate('user', 'name email phone');
+    const booking = await getBookingRow(req.params.id);
     if (!booking) return res.status(404).json({ error: 'Booking not found.' });
-    if (booking.user._id.toString() !== req.user.id && req.user.role !== 'admin')
+    if (booking.user_id !== req.user.id && req.user.role !== 'admin') {
       return res.status(403).json({ error: 'Access denied.' });
+    }
     res.json(booking);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// PATCH /api/bookings/:id/cancel - cancel booking
+// PATCH /api/bookings/:id/cancel – cancel a booking
 router.patch('/:id/cancel', verifyToken, async (req, res) => {
   try {
-    const booking = await Booking.findById(req.params.id);
+    const { rows } = await pool.query('SELECT * FROM bookings WHERE id = $1', [req.params.id]);
+    const booking = rows[0];
     if (!booking) return res.status(404).json({ error: 'Booking not found.' });
-    if (booking.user.toString() !== req.user.id && req.user.role !== 'admin')
+    if (booking.user_id !== req.user.id && req.user.role !== 'admin') {
       return res.status(403).json({ error: 'Access denied.' });
-    booking.status = 'cancelled';
-    await booking.save();
-    res.json({ message: 'Booking cancelled.', booking });
+    }
+    const { rows: updated } = await pool.query(
+      "UPDATE bookings SET status = 'cancelled' WHERE id = $1 RETURNING *",
+      [req.params.id]
+    );
+    res.json({ message: 'Booking cancelled.', booking: updated[0] });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -107,7 +107,7 @@ INSERT INTO destinations (admin_id, name, location, category, description, image
 (1, 'Taj Mahal', 'Agra, India', 'Historical', '17th-century ivory-white marble mausoleum on the Yamuna river.', 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80'),
 (1, 'The Colosseum', 'Rome, Italy', 'Historical', 'Oval amphitheatre in the centre of the city of Rome.', 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80'),
 (1, 'Machu Picchu', 'Cusco Region, Peru', 'Heritage', '15th-century Inca citadel located in the Andes.', 'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=80'),
-(1, 'Hampi Group of Monuments', 'Karnataka, India', 'Historical', 'UNESCO World Heritage site featuring Vijayanagara Empire temples.', 'https://images.unsplash.com/photo-1600100397608-f010f423b971?auto=format&fit=crop&w=800&q=80');
+(1, 'Hampi Group of Monuments', 'Karnataka, India', 'Historical', 'UNESCO World Heritage site featuring Vijayanagara Empire temples.', '/images/hampi.png');
 
 INSERT INTO tour_packages (admin_id, package_name, duration_days, price, destination_id) VALUES
 (1, 'Golden Triangle & Taj Royal Explorer', 4, 18500.00, 1),

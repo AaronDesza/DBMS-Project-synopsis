@@ -214,10 +214,11 @@ async function loadDestinations() {
 }
 
 function destCard(d) {
-  const imgUrl = d.imageUrl || DEFAULT_DEST_IMG;
+  const imgUrl = d.imageUrl || d.image_url || DEFAULT_DEST_IMG;
+  const destId = d._id || d.id;
   return `
   <div class="col-sm-6 col-lg-3">
-    <div class="place-card" onclick="openDestDetail('${d._id}')">
+    <div class="place-card" onclick="openDestDetail('${destId}')">
       <div class="place-img-wrapper">
         <img src="${imgUrl}" alt="${d.name}" class="place-img" loading="lazy" onerror="this.onerror=null;this.src='${DEFAULT_DEST_IMG}'" />
         <span class="badge-category">${d.category}</span>
@@ -227,7 +228,7 @@ function destCard(d) {
         <h5 class="fw-bold mb-1 text-dark">${d.name}</h5>
         <p class="text-muted small mb-2"><i class="bi bi-geo-alt-fill text-warning me-1"></i>${d.location}</p>
         <p class="small text-secondary mb-3 flex-grow-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${d.description}</p>
-        <button class="btn btn-sm btn-outline-warning w-100 fw-semibold rounded-pill" onclick="event.stopPropagation(); openDestDetail('${d._id}')">
+        <button class="btn btn-sm btn-outline-warning w-100 fw-semibold rounded-pill" onclick="event.stopPropagation(); openDestDetail('${destId}')">
           <i class="bi bi-eye me-1"></i>View Details & Reviews
         </button>
       </div>
@@ -255,7 +256,7 @@ async function openDestDetail(id) {
 
     title.textContent = dest.name;
     const avgRating = reviews.length ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : '5.0';
-    const imgUrl = dest.imageUrl || DEFAULT_DEST_IMG;
+    const imgUrl = dest.imageUrl || dest.image_url || DEFAULT_DEST_IMG;
 
     body.innerHTML = `
       <div class="position-relative mb-3 rounded-4 overflow-hidden shadow">

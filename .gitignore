@@ -1,11 +1,8 @@
-﻿# Dependencies
+# Dependencies
 node_modules/
 
-# Environment variables (sensitive)
+# Environment variables (sensitive – NEVER commit)
 .env
-
-# PHP/XAMPP legacy
-config/db.php
 
 # OS & editor
 .DS_Store

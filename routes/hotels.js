@@ -1,34 +1,40 @@
 const express = require('express');
-const router = express.Router();
-const Hotel = require('../models/Hotel');
+const router  = express.Router();
+const pool    = require('../backend/db/pool');
 const { verifyAdmin } = require('../middleware/auth');
 
-// GET /api/hotels - list all available hotels (public/travellers)
+// GET /api/hotels – public
 router.get('/', async (req, res) => {
   try {
-    const hotels = await Hotel.find().sort({ rating: -1, pricePerNight: 1 });
-    res.json(hotels);
+    const { rows } = await pool.query(
+      'SELECT * FROM hotels ORDER BY rating DESC, price_per_night ASC'
+    );
+    res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// GET /api/hotels/:id - get single hotel
+// GET /api/hotels/:id – public
 router.get('/:id', async (req, res) => {
   try {
-    const hotel = await Hotel.findById(req.params.id);
-    if (!hotel) return res.status(404).json({ error: 'Hotel not found.' });
-    res.json(hotel);
+    const { rows } = await pool.query('SELECT * FROM hotels WHERE id = $1', [req.params.id]);
+    if (!rows.length) return res.status(404).json({ error: 'Hotel not found.' });
+    res.json(rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// POST /api/hotels - add a hotel (admin only)
+// POST /api/hotels – admin only
 router.post('/', verifyAdmin, async (req, res) => {
   try {
-    const hotel = await Hotel.create(req.body);
-    res.status(201).json(hotel);
+    const { hotel_name, price_per_night, rating } = req.body;
+    const { rows } = await pool.query(
+      'INSERT INTO hotels (hotel_name, price_per_night, rating) VALUES ($1,$2,$3) RETURNING *',
+      [hotel_name, price_per_night, rating]
+    );
+    res.status(201).json(rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
