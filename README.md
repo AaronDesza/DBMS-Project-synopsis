@@ -1,4 +1,4 @@
-<img width="1024" height="838" alt="image" src="https://github.com/user-attachments/assets/f6a6bc8f-882b-45a1-be49-ab96bac57caf" /><img width="1057" height="857" alt="image" src="https://github.com/user-attachments/assets/023371f6-2f8b-4a02-b87b-71ff123a162f" /># 🌍 TourQuest - Travel & Tour Management System (DBMS Project)
+# 🌍 TourQuest - Travel & Tour Management System (DBMS Project)
 
 A complete, full-stack Relational Database Management System (DBMS) project designed for academic presentation, synopsis review, and real-world travel exploration.
 
@@ -46,16 +46,21 @@ TourQuest implements comprehensive user handling and account management, disting
 
 🌍 Landing Page & Destination Exploration
 The landing page serves as the entry point of TourQuest, featuring a responsive hero banner and a high-resolution photographic collection of 15 world heritage sites. Each destination card displays badges for historical categories and ratings, along with quick actions to view detailed information and reviews.
-![Uploading image.png…]()
+<img src="image_c1d65a.jpg" alt="TourQuest homepage header showing the hero section and featured historical destinations grid" width="100%">
 
 🗺️ Curated Tour Packages
 TourQuest provides hand-picked itineraries complete with historic tours, accommodations, and transport. Users can inspect package durations, base pricing, and included monument sites before proceeding to instant booking and customization.
+<img src="image_c1d5fc.jpg" alt="Curated tour packages section showcasing Golden Triangle and Vijayanagara Heritage Trail" width="100%">
 
 ⚙️ Itinerary Customization & Live Fare Estimation
 The interactive customization engine allows travellers to tailor their trip by choosing specific luxury accommodations (e.g., The Oberoi Amarvilas Heritage), transit modes (such as train and tour coach), and departure dates. The interface computes all-inclusive live fare estimates instantly before checkout.
+<img src="image_c1dd1d.png" alt="Customize and Book Tour interface showing hotel selection, transit mode, travel date, and live fare breakdown" width="100%">
+
+<img src="image_c1d9f9.png" alt="TourQuest official e-ticket and booking confirmation voucher with confirmed status badge and breakdown" width="100%">
 
 💳 Secure Payment Gateway
 The secure payment gateway supports multiple transaction methods including UPI/QR code scanning, Credit/Debit cards, and Net Banking. It displays a real-time order summary with itemized pricing, guarantees 256-bit SSL encryption, and includes VPA handle inputs.
+<img src="image_c1da57.png" alt="Payment Gateway interface displaying UPI QR code scan options, card payment tabs, and order summary" width="100%">
 
 ---
 
